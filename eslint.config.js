@@ -1,6 +1,7 @@
 /** @format */
 
 import pluginJs from '@eslint/js';
+import markdown from "eslint-plugin-markdown";
 import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -36,6 +37,7 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/essential'],
+  ...markdown.configs.recommended,
   {
     files: ['**/*.vue'],
     languageOptions: {
@@ -50,7 +52,7 @@ export default [
     rules: {
       'no-var': 'error', // 不允许使用var定义
       'prefer-const': 'error', // 强制在可能的情况下使用 const 声明变量，而不是 let
-      'no-empty': ['error', { allowEmptyCatch: true }] // 允许catch空着
+      'no-empty': ['error', { allowEmptyCatch: true }], // 允许catch空着
     }
   }
 ];

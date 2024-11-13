@@ -1,17 +1,8 @@
 <!-- @format -->
 
-<!--
- * @Author: wangqiaoling
- * @Date: 2024-11-05 11:23:42
- * @LastEditTime: 2024-11-08 17:12:19
- * @LastEditors: wangqiaoling
- * @Description: 
--->
-<!-- @format -->
-
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue';
-let count = 0;
+var count = 0;
 </script>
 
 <template>
