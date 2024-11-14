@@ -4,7 +4,7 @@
   "endOfLine": "lf",
   "semi": true,
   "trailingComma": "none",
-  "insertPragma": true,
+  "insertPragma": false,
   "requirePragma": false,
   "overrides": [
     {

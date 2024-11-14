@@ -1,5 +1,3 @@
-/** @format */
-
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { defineConfig } from 'vite';
@@ -8,7 +6,7 @@ import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint2';
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), eslint({ lintOnStart: true, cache: true, fix: true })],
+  plugins: [vue(), eslint({ lintOnStart: true, cache: false, fix: true })],
   resolve: {
     alias: {
       '@': path.resolve('./src') // @代替src
