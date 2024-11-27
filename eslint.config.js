@@ -7,6 +7,7 @@ import prettierPlugin from 'eslint-plugin-prettier';
 import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import autoImport from './.eslintrc-auto-import.json' with { type: 'json' };
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -17,7 +18,8 @@ export default [
         ...globals.browser,
         ...globals.node,
         ...globals.worker,
-        ...globals.es2021
+        ...globals.es2021,
+        ...autoImport.globals
       }
     }
   },

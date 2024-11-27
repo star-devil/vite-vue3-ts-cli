@@ -1,12 +1,32 @@
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { defineConfig } from 'vite';
-
-// 在启动项目和打包代码时进行代码检查, 如果检查有error类型的问题就启动或打包失败, warn类型的问题不影响启动和打包
+import AutoImport from 'unplugin-auto-import/vite';
 import eslint from 'vite-plugin-eslint2';
+import Components from 'unplugin-vue-components/vite';
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), eslint({ lintOnStart: true, cache: false, fix: true })],
+  plugins: [
+    vue(),
+    eslint({ lintOnStart: true, cache: false, fix: true }),
+    AutoImport({
+      imports: ['vue', 'vue-router', 'pinia'],
+      dts: './auto-import.d.ts',
+      eslintrc: {
+        // 已存在文件设置默认 false，需要更新时再打开，防止每次更新都重新生成
+        enabled: false,
+        filepath: './.eslintrc-auto-import.json',
+        globalsPropValue: true
+      }
+    }),
+    Components({
+      dirs: ['src/**/components'],
+      extensions: ['vue'],
+      dts: 'src/components.d.ts',
+      deep: true // 搜索子目录
+    })
+  ],
   resolve: {
     alias: {
       '@': path.resolve('./src') // @代替src
