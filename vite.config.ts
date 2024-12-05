@@ -27,6 +27,14 @@ export default defineConfig({
       deep: true // 搜索子目录
     })
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+        additionalData: "$color: red'"
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': path.resolve('./src') // @代替src
