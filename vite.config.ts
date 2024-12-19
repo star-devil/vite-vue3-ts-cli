@@ -1,7 +1,7 @@
 /*
  * @Author: wangqiaoling
  * @Date: 2024-11-28 10:24:01
- * @LastEditTime: 2024-12-06 14:52:47
+ * @LastEditTime: 2024-12-19 17:15:29
  * @LastEditors: wangqiaoling
  * @Description:
  */
@@ -14,6 +14,7 @@ import Components from 'unplugin-vue-components/vite';
 import autoprefixer from 'autoprefixer';
 // @ts-expect-error postcss-pxtorem还没有官方的ts包
 import pxtorem from 'postcss-pxtorem';
+import tailwindcss from 'tailwindcss';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -41,7 +42,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         api: 'modern-compiler',
-        additionalData: "$color: red'"
+        additionalData: '$color: red;'
       }
     },
     postcss: {
@@ -60,10 +61,11 @@ export default defineConfig({
         pxtorem({
           rootValue: 14, // 1rem = 14px
           propList: ['*', '!border'], // 需要转换的属性，除 border 外所有px 转 rem
-          exclude: '*/node_modules/*', // 排除node_modules
+          exclude: '/node_modules/*', // 排除node_modules
           mediaQuery: false, // 是否要在媒体查询中转换px
           minPixelValue: 2 // 设置要转换的最小像素值
-        })
+        }),
+        tailwindcss()
       ]
     }
   },
