@@ -8,6 +8,7 @@
     "lint:eslint": "eslint . --ext .vue,.js,.ts,.tsx,.jsx --fix",
     "lint:prettier": "prettier --write  \"./**/*.{js,ts,json,tsx,css,scss,vue,html,md}\"",
     "lint:stylelint": "stylelint --fix \"./**/*.{html,vue,css,scss}\"",
+    "lint": "pnpm lint:eslint && pnpm lint:prettier && pnpm lint:stylelint",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "commitlint": "commitlint --config commitlint.config.ts -e -V",
