@@ -1,30 +1,24 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import VueView from '@assets/icons/vue.svg?view';
+import ViteView from '@assets/icons/vite.svg?view';
+</script>
 
 <template>
   <div>
     <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
+      <ViteView class="logo" />
     </a>
     <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+      <VueView class="logo" />
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  transition: filter 300ms;
-  will-change: filter;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+  display: inline-block;
+  width: 42px;
+  margin: 20px;
 }
 </style>

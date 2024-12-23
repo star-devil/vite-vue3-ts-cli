@@ -1,20 +1,18 @@
-/*
- * @Author: wangqiaoling
- * @Date: 2024-11-28 10:24:01
- * @LastEditTime: 2024-12-19 17:15:29
- * @LastEditors: wangqiaoling
- * @Description:
- */
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { defineConfig } from 'vite';
-import AutoImport from 'unplugin-auto-import/vite';
 import eslint from 'vite-plugin-eslint2';
+// 自动导入
+import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
+// css（样式）相关
 import autoprefixer from 'autoprefixer';
 // @ts-expect-error postcss-pxtorem还没有官方的ts包
 import pxtorem from 'postcss-pxtorem';
 import tailwindcss from 'tailwindcss';
+// 静态资源优化
+import viteImagemin from 'vite-plugin-imagemin';
+import VitePluginSvgSpritemap from '@spiriit/vite-plugin-svg-spritemap';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -36,6 +34,42 @@ export default defineConfig({
       extensions: ['vue'],
       dts: 'src/components.d.ts',
       deep: true // 搜索子目录
+    }),
+    viteImagemin({
+      verbose: false,
+      optipng: {
+        // 优化级别：
+        optimizationLevel: 7
+      },
+      gifsicle: {
+        optimizationLevel: 7,
+        interlaced: false
+      },
+      mozjpeg: {
+        quality: 20
+      },
+      pngquant: {
+        quality: [0.8, 0.9],
+        speed: 4
+      },
+      svgo: {
+        plugins: [
+          {
+            name: 'removeViewBox'
+          },
+          {
+            name: 'removeEmptyAttrs',
+            active: false
+          }
+        ]
+      }
+    }),
+    VitePluginSvgSpritemap('./src/assets/icons/*.svg', {
+      prefix: 'sprites_icon-',
+      output: {
+        view: true,
+        use: true
+      }
     })
   ],
   css: {
@@ -72,7 +106,8 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      '@': path.resolve('./src') // @代替src
+      '@': path.resolve(__dirname, 'src'),
+      '@assets': path.resolve(__dirname, 'src/assets')
     }
   }
 });
