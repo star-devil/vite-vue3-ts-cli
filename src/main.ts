@@ -3,5 +3,6 @@ import App from './App.vue';
 import './tailwind.css';
 import './scss/style.scss';
 import '../lib/remUnit';
+import pinia from './stores';
 
-createApp(App).mount('#app');
+createApp(App).use(pinia).mount('#app');

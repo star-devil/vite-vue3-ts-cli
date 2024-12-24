@@ -1,10 +1,3 @@
-/*
- * @Author: wangqiaoling
- * @Date: 2024-11-27 09:27:02
- * @LastEditTime: 2024-12-24 13:20:17
- * @LastEditors: wangqiaoling
- * @Description:
- */
 module.exports = {
   ignores: [(commit) => commit.includes('init')],
   extends: ['@commitlint/config-conventional'],
