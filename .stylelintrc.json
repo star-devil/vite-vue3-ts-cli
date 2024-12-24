@@ -12,8 +12,10 @@
     }
   ],
   "ignoreFiles": [
+    "/.husky/*",
+    "/.vscode/*",
     "dist/**/*",
-    "node_modules/**/*",
+    "/node_modules/**/*",
     "**/*.js",
     "**/*.jsx",
     "**/*.tsx",
