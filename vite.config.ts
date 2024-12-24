@@ -1,12 +1,12 @@
 /*
  * @Author: wangqiaoling
  * @Date: 2024-11-28 10:24:01
- * @LastEditTime: 2024-12-24 10:49:17
+ * @LastEditTime: 2024-12-24 11:08:13
  * @LastEditors: wangqiaoling
  * @Description: vite 配置
  */
 import { defineConfig, loadEnv } from 'vite';
-import viteConfig from './vite';
+import viteConfig from './viteConfig';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
