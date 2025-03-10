@@ -12,7 +12,7 @@ import ViteView from '@assets/icons/vite.svg?view';
       <VueView class="logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <router-view></router-view>
 </template>
 
 <style scoped lang="scss">
