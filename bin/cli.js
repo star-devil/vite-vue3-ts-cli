@@ -42,7 +42,7 @@ const PLUGINS = [
 program
   .name('create-vite-vue3-ts')
   .description('基于 Vite + Vue3 + TypeScript 的项目模板')
-  .version('0.0.1')
+  .version('0.1.0')
   .argument('[project-name]', '项目名称')
   .action(async (projectName) => {
     try {

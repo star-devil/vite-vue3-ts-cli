@@ -1,6 +1,6 @@
 {
-  "name": "vite-vue3-ts",
-  "version": "0.0.1",
+  "name": "create-vite_vue3_ts",
+  "version": "0.1.0",
   "type": "module",
   "description": "一个基于 Vite + Vue3 + TypeScript 的项目模板",
   "bin": {
