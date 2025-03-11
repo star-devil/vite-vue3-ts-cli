@@ -9,7 +9,7 @@
 - 📦 开箱即用的组件自动导入
 - 🎨 可选的工具集成：
   - PostCSS px 转 rem
-  - TailwindCSS 支持、
+  - TailwindCSS 支持
   - 🎯 SVG 组件化支持
 - 🔍 ESLint + Prettier + Stylelint 代码规范
 - 📝 Git Commit 信息规范化
