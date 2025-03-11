@@ -1,6 +1,6 @@
 {
   "name": "create-vite-vue3-ts-cli",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "type": "module",
   "description": "一个基于 Vite + Vue3 + TypeScript 的项目模板脚手架",
   "bin": {
