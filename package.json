@@ -1,10 +1,11 @@
 {
-  "name": "create-vite_vue3_ts",
+  "name": "create-vite-vue3-ts-cli",
   "version": "0.1.0",
   "type": "module",
-  "description": "一个基于 Vite + Vue3 + TypeScript 的项目模板",
+  "description": "一个基于 Vite + Vue3 + TypeScript 的项目模板脚手架",
   "bin": {
-    "create-vite-vue3-ts": "bin/cli.js"
+    "create-vite-vue3-ts-cli": "bin/cli.js",
+    "cvvt": "bin/cli.js"
   },
   "files": [
     "bin",
