@@ -7,7 +7,7 @@ settings:
 importers:
 
   .:
-    devDependencies:
+    dependencies:
       chalk:
         specifier: ^5.4.1
         version: 5.4.1

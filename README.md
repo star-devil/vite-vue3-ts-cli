@@ -20,13 +20,19 @@
 
 ```bash
 # 使用 npm
-npm create cvvt@latest [项目名称]
+npm create vite-vue3-ts-app@latest [项目名称]
+## 或使用简写
+npm create vvt@latest [项目名称]
 
 # 使用 yarn
-yarn create cvvt [项目名称]
+yarn create vite-vue3-ts-app [项目名称]
+## 或使用简写
+yarn create vvt [项目名称]
 
 # 使用 pnpm（推荐使用）
-pnpm create cvvt [项目名称]
+pnpm create vite-vue3-ts-app [项目名称]
+## 或使用简写
+pnpm create vvt [项目名称]
 ```
 
 ### 按照提示完成项目配置
