@@ -14,8 +14,15 @@
     "Vite",
     "Vue3",
     "TypeScript",
-    "Web",
-    "CLI"
+    "template",
+    "模板",
+    "cli",
+    "脚手架",
+    "boilerplate",
+    "create-app",
+    "create-vite",
+    "frontend",
+    "web"
   ],
   "author": "egg",
   "devDependencies": {
