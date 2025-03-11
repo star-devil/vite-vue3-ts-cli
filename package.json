@@ -4,8 +4,7 @@
   "type": "module",
   "description": "一个基于 Vite + Vue3 + TypeScript 的项目模板脚手架",
   "bin": {
-    "vite-vue3-ts-app": "bin/cli.js",
-    "vvt": "bin/cli.js"
+    "vite-vue3-ts-cli": "bin/cli.js"
   },
   "files": [
     "bin",
