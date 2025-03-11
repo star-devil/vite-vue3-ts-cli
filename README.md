@@ -20,13 +20,13 @@
 
 ```bash
 # 使用 npm
-npm create-vite-vue3-ts@latest [项目名称]
+npm create vite-vue3-ts@latest [项目名称]
 
 # 使用 yarn
-yarn create-vite-vue3-ts [项目名称]
+yarn create vite-vue3-ts [项目名称]
 
 # 使用 pnpm
-pnpm create-vite-vue3-ts [项目名称]
+pnpm create vite-vue3-ts [项目名称]
 ```
 
 ### 按照提示完成项目配置
