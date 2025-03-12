@@ -22,11 +22,11 @@ const PLUGINS = [
     }
   },
   {
-    name: 'tailwindcss',
+    name: 'tailwindcss（v3.x）',
     value: 'tailwind',
     description: '功能优先的 CSS 框架',
     devDependencies: {
-      tailwindcss: '^4.0.12'
+      tailwindcss: '3'
     }
   },
   {
@@ -188,6 +188,23 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
       cssConfig = cssConfig.replace(/import pxtorem.*;\n/, '');
       cssConfig = cssConfig.replace(/\s*pxtorem\({[^}]+}\),?\n?/, '');
       mainContent = mainContent.replace(/import '\.\/lib\/remUnit';\n/, '');
+    }
+
+    // 处理 tailwindcss 插件
+    if (!selectedPlugins.includes('tailwind')) {
+      cssConfig = cssConfig.replace(/import tailwindcss.*;\n/, '');
+      cssConfig = cssConfig.replace(/\s*tailwindcss\(\),?\n?/, '');
+      mainContent = mainContent.replace(/import '\.\/tailwind.css';\n/, '');
+
+      const tailwindPath = path.join(root, 'src/tailwind.css');
+      if (fs.existsSync(tailwindPath)) {
+        fs.unlinkSync(tailwindPath);
+      }
+
+      const tailwindConfigPath = path.join(root, 'tailwind.config.ts');
+      if (fs.existsSync(tailwindConfigPath)) {
+        fs.unlinkSync(tailwindConfigPath);
+      }
     }
 
     fs.writeFileSync(cssConfigPath, cssConfig);

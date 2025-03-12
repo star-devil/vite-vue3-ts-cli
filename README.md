@@ -1,4 +1,4 @@
-# create-vite-vue3-ts
+# create-vvt(vite-vue3-ts)
 
 一个基于 Vite + Vue3 + TypeScript 的项目模板脚手架，集成了多个实用的功能和最佳实践。
 
@@ -20,13 +20,13 @@
 
 ```bash
 # 使用 npm
-npm create vite-vue3-ts-cli@latest [项目名称]
+npm create vvt@latest [项目名称]
 
 # 使用 yarn
-yarn create vite-vue3-ts-cli [项目名称]
+yarn create vvt [项目名称]
 
 # 使用 pnpm（推荐使用）
-pnpm create vite-vue3-ts-cli [项目名称]
+pnpm create vvt [项目名称]
 ```
 
 ### 按照提示完成项目配置

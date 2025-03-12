@@ -2,6 +2,7 @@ import { CSSOptions } from 'vite';
 import autoprefixer from 'autoprefixer';
 // @ts-expect-error postcss-pxtorem还没有官方的ts包
 import pxtorem from 'postcss-pxtorem';
+import tailwindcss from 'tailwindcss';
 
 export default function (): CSSOptions {
   const preprocessorOptions = {
@@ -29,7 +30,8 @@ export default function (): CSSOptions {
         exclude: '/node_modules/*', // 排除node_modules
         mediaQuery: false, // 是否要在媒体查询中转换px
         minPixelValue: 2 // 设置要转换的最小像素值
-      })
+      }),
+      tailwindcss()
     ]
   };
   return { preprocessorOptions, postcss };
