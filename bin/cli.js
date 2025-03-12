@@ -173,6 +173,7 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
   // 根据选择的插件修改配置
   if (fs.existsSync(cssConfigPath)) {
     let cssConfig = fs.readFileSync(cssConfigPath, 'utf-8');
+    // 处理 pxtorem 插件
     if (!selectedPlugins.includes('pxtorem')) {
       const remUnitPath = path.join(root, 'src/lib/remUnit.ts');
       if (fs.existsSync(remUnitPath)) {
@@ -196,16 +197,30 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
   const commonPluginsPath = path.join(root, 'viteConfig/plugins/common.ts');
   if (fs.existsSync(commonPluginsPath)) {
     let commonPlugins = fs.readFileSync(commonPluginsPath, 'utf-8');
+    // 处理 tailwindcss 插件
     if (!selectedPlugins.includes('tailwind')) {
-      commonPlugins = commonPlugins.replace(/import @tailwindcss\/vite;\n/, '');
+      commonPlugins = commonPlugins.replace(
+        /import '@tailwindcss\/vite';\n/,
+        ''
+      );
       commonPlugins = commonPlugins.replace(/\s*tailwindcss\(\),?\n?/, '');
       mainContent = mainContent.replace(/import '\.\/tailwind.css';\n/, '');
+
       const tailwindPath = path.join(root, 'src/tailwind.css');
       if (fs.existsSync(tailwindPath)) {
         fs.unlinkSync(tailwindPath);
       }
+
       fs.writeFileSync(commonPluginsPath, commonPlugins);
       fs.writeFileSync(mainPath, mainContent);
+    } else {
+      // 如果安装了 tailwindcss，删除 autoprefixer 插件（tw4自带）
+      if (fs.existsSync(cssConfigPath)) {
+        let cssConfig = fs.readFileSync(cssConfigPath, 'utf-8');
+        cssConfig = cssConfig.replace(/import autoprefixer.*;\n/, '');
+        cssConfig = cssConfig.replace(/\s*autoprefixer\({[^}]+}\),?\n?/, '');
+        fs.writeFileSync(cssConfigPath, cssConfig);
+      }
     }
   }
 
@@ -216,6 +231,7 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
 
   if (fs.existsSync(staticPerfConfigPath)) {
     let staticPerfConfig = fs.readFileSync(staticPerfConfigPath, 'utf-8');
+    // 处理 svgLoader 插件
     if (!selectedPlugins.includes('svgLoader')) {
       const appVuePath = path.join(root, 'src/App.vue');
       if (fs.existsSync(appVuePath)) {
@@ -276,6 +292,10 @@ async function updatePackageJson(root, selectedPlugins) {
       });
     }
   });
+
+  // 如果安装了 tailwindcss，删除 autoprefixer 插件（tw4自带）
+  selectedPlugins.includes('tailwind') &&
+    delete pkg.devDependencies.autoprefixer;
 
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
 }

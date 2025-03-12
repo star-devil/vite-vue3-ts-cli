@@ -4,7 +4,6 @@ import autoprefixer from 'autoprefixer';
 import pxtorem from 'postcss-pxtorem';
 
 export default function (): CSSOptions {
-  // 别名配置相对于当前文件路径
   const preprocessorOptions = {
     scss: {
       api: 'modern-compiler',
