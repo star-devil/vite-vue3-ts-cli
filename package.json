@@ -1,19 +1,20 @@
 {
   "name": "create-vvt",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
-  "description": "一个基于 Vite + Vue3 + TypeScript 的项目模板脚手架",
+  "description": "一个基于 Vite + Vue3 + TypeScript/JavaScript 的项目模板脚手架",
   "bin": {
     "vvt": "bin/cli.js"
   },
   "files": [
     "bin",
-    "template"
+    "templates"
   ],
   "keywords": [
     "Vite",
     "Vue3",
     "TypeScript",
+    "JavaScript",
     "template",
     "模板",
     "cli",

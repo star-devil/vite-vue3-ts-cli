@@ -39,9 +39,25 @@ const PLUGINS = [
   }
 ];
 
+// 语言选项
+const LANGUAGES = {
+  typescript: {
+    name: 'TypeScript',
+    value: 'typescript',
+    description: '使用 TypeScript 语法（类型安全的 JavaScript 超集）',
+    templateDir: 'templates/typescript'
+  },
+  javascript: {
+    name: 'JavaScript',
+    value: 'javascript',
+    description: '使用 JavaScript 语法（更简洁，无类型检查）',
+    templateDir: 'templates/javascript'
+  }
+};
+
 program
   .name('create-vite-vue3-ts')
-  .description('基于 Vite + Vue3 + TypeScript 的项目模板')
+  .description('基于 Vite + Vue3 + TypeScript/JavaScript 的项目模板')
   .version('0.1.0')
   .argument('[project-name]', '项目名称')
   .action(async (projectName) => {
@@ -62,7 +78,7 @@ async function createProject(projectName) {
         type: 'input',
         name: 'name',
         message: '请输入项目名称：',
-        default: projectName || 'vite-vue3-ts-project',
+        default: projectName || 'vite-vue3-project',
         validate: (input) => {
           if (!input.trim()) {
             return '项目名称不能为空';
@@ -74,13 +90,27 @@ async function createProject(projectName) {
         type: 'input',
         name: 'description',
         message: '请输入项目描述：',
-        default: '基于 Vite + Vue3 + TypeScript 的项目模板'
+        default: '基于 Vite + Vue3 的项目模板'
       },
       {
         type: 'input',
         name: 'author',
         message: '请输入作者名称：',
         default: 'egg'
+      }
+    ]);
+
+    // 选择语言
+    const { language } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'language',
+        message: '请选择开发语言：',
+        choices: Object.values(LANGUAGES).map((lang) => ({
+          name: `${lang.name} (${lang.description})`,
+          value: lang.value
+        })),
+        default: 'typescript'
       }
     ]);
 
@@ -127,7 +157,11 @@ async function createProject(projectName) {
     const spinner = ora(chalk.bgYellow('正在创建项目...')).start();
 
     // 复制模板
-    const templateDir = path.resolve(__dirname, '../template');
+    const templateDir = path.resolve(
+      __dirname,
+      '..',
+      LANGUAGES[language].templateDir
+    );
     fs.mkdirSync(targetDir, { recursive: true });
     await copyTemplate(templateDir, targetDir);
 
@@ -136,7 +170,8 @@ async function createProject(projectName) {
     await updateProjectFiles(targetDir, selectedPlugins, {
       name,
       description,
-      author
+      author,
+      language
     });
     await updatePackageJson(targetDir, selectedPlugins, {
       name,
@@ -166,16 +201,32 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
   pkg.description = projectInfo.description;
   pkg.author = projectInfo.author;
 
-  const mainPath = path.join(root, 'src/main.ts');
+  // 根据选择的语言决定入口文件的扩展名
+  const mainExtension = projectInfo.language === 'typescript' ? '.ts' : '.js';
+  const mainPath = path.join(root, `src/main${mainExtension}`);
+
+  if (!fs.existsSync(mainPath)) {
+    throw new Error(`找不到主入口文件: ${mainPath}`);
+  }
+
   let mainContent = fs.readFileSync(mainPath, 'utf-8');
 
-  const cssConfigPath = path.join(root, 'viteConfig/css/index.ts');
+  // 处理 CSS 配置文件
+  const cssConfigExtension =
+    projectInfo.language === 'typescript' ? '.ts' : '.js';
+  const cssConfigPath = path.join(
+    root,
+    `viteConfig/css/index${cssConfigExtension}`
+  );
+
   // 根据选择的插件修改配置
   if (fs.existsSync(cssConfigPath)) {
     let cssConfig = fs.readFileSync(cssConfigPath, 'utf-8');
     // 处理 pxtorem 插件
     if (!selectedPlugins.includes('pxtorem')) {
-      const remUnitPath = path.join(root, 'src/lib/remUnit.ts');
+      const remUnitExtension =
+        projectInfo.language === 'typescript' ? '.ts' : '.js';
+      const remUnitPath = path.join(root, `src/lib/remUnit${remUnitExtension}`);
       if (fs.existsSync(remUnitPath)) {
         fs.unlinkSync(remUnitPath);
         // 如果 lib 目录为空，也删除该目录
@@ -184,7 +235,12 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
           fs.rmdirSync(libDir);
         }
       }
-      cssConfig = cssConfig.replace(/\/\/ @ts-expect-error.*\n/, '');
+
+      // TypeScript特有的注释，在JavaScript中可能不存在
+      if (projectInfo.language === 'typescript') {
+        cssConfig = cssConfig.replace(/\/\/ @ts-expect-error.*\n/, '');
+      }
+
       cssConfig = cssConfig.replace(/import pxtorem.*;\n/, '');
       cssConfig = cssConfig.replace(/\s*pxtorem\({[^}]+}\),?\n?/, '');
       mainContent = mainContent.replace(/import '\.\/lib\/remUnit';\n/, '');
@@ -201,7 +257,12 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
         fs.unlinkSync(tailwindPath);
       }
 
-      const tailwindConfigPath = path.join(root, 'tailwind.config.ts');
+      const tailwindConfigExtension =
+        projectInfo.language === 'typescript' ? '.ts' : '.js';
+      const tailwindConfigPath = path.join(
+        root,
+        `tailwind.config${tailwindConfigExtension}`
+      );
       if (fs.existsSync(tailwindConfigPath)) {
         fs.unlinkSync(tailwindConfigPath);
       }
@@ -211,13 +272,19 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
     fs.writeFileSync(mainPath, mainContent);
   }
 
-  const commonPluginsPath = path.join(root, 'viteConfig/plugins/common.ts');
+  const commonPluginsExtension =
+    projectInfo.language === 'typescript' ? '.ts' : '.js';
+  const commonPluginsPath = path.join(
+    root,
+    `viteConfig/plugins/common${commonPluginsExtension}`
+  );
   if (fs.existsSync(commonPluginsPath)) {
     let commonPlugins = fs.readFileSync(commonPluginsPath, 'utf-8');
     // 处理 tailwindcss 插件
     if (!selectedPlugins.includes('tailwind')) {
+      // 处理tailwindcss导入，路径可能在JavaScript和TypeScript中不同
       commonPlugins = commonPlugins.replace(
-        /import '@tailwindcss\/vite';\n/,
+        /import ['"]@tailwindcss\/vite['"];\n/,
         ''
       );
       commonPlugins = commonPlugins.replace(/\s*tailwindcss\(\),?\n?/, '');
@@ -241,9 +308,11 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
     }
   }
 
+  const staticPerfConfigExtension =
+    projectInfo.language === 'typescript' ? '.ts' : '.js';
   const staticPerfConfigPath = path.join(
     root,
-    'viteConfig/plugins/staticPerf.ts'
+    `viteConfig/plugins/staticPerf${staticPerfConfigExtension}`
   );
 
   if (fs.existsSync(staticPerfConfigPath)) {
@@ -256,8 +325,11 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
         // 删除 import 语句
         appContent = appContent.replace(/import VueView.*;\n/, '');
         appContent = appContent.replace(/import ViteView.*;\n/, '');
-        // 删除<script>标签
-        appContent = appContent.replace(/<script>[\s\S]*?<\/script>/, '');
+        // 删除<script>标签 - 确保能匹配任何script标签
+        appContent = appContent.replace(
+          /<script(\s+setup)?(\s+lang="ts")?>\s*[\s\S]*?<\/script>/,
+          ''
+        );
         // 替换 SVG 组件为 img 标签
         appContent = appContent.replace(
           /<ViteView width="40" height="40" class="logo" \/>/,
