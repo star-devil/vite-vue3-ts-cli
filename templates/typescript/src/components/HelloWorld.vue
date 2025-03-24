@@ -1,5 +1,11 @@
 <script setup lang="ts">
-defineProps<{ msg: string }>();
+defineProps({
+  msg: {
+    type: String,
+    required: false,
+    default: 'Hello World'
+  }
+});
 const count = ref(0);
 </script>
 

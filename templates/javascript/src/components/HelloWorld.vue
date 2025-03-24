@@ -3,7 +3,8 @@ import { ref } from 'vue';
 defineProps({
   msg: {
     type: String,
-    required: true
+    required: false,
+    default: 'Hello World'
   }
 });
 const count = ref(0);

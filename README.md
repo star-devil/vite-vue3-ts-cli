@@ -5,7 +5,7 @@
 ## 特性
 
 - 🚀 基于 Vite 构建，开发体验极致
-- 💪 Vue 3 + TypeScript，类型安全
+- 💪 Vue 3 + JavaScript，简单快捷 **OR** Vue 3 + TypeScript，类型安全
 - 📦 开箱即用的组件自动导入
 - 🎨 可选的工具集成：
   - PostCSS px 转 rem
@@ -31,10 +31,17 @@ pnpm create vvt [项目名称]
 
 ### 按照提示完成项目配置
 
-1. 输入项目名称（默认：vite-vue3-ts-project）
+1. 输入项目名称（默认：vite-vue3-project）
 2. 输入项目描述
 3. 输入作者名称
-4. 选择需要的插件功能
+4. 选择需要的语言
+5. 选择需要的插件功能
+
+#### 可选语言
+
+- javascript
+
+- typescript
 
 #### 可选插件
 
@@ -47,7 +54,7 @@ pnpm create vvt [项目名称]
 - vite-svg-loader
 将 SVG 文件作为 Vue 组件导入使用。
 
-## 项目结构
+## 项目结构（以 ts 为例）
 
 ```plaintext
 ├── .husky/            # Git Hooks
