@@ -1,6 +1,14 @@
-# create-vvt(vite-vue3-ts)
+# create-vvt(vite-vue3-ts/js)
 
-一个基于 Vite + Vue3 + TypeScript 的项目模板脚手架，集成了多个实用的功能和最佳实践。
+一个基于 Vite + Vue3 + TypeScript/JavaScript 的项目模板脚手架，集成了多个实用的功能和最佳实践。
+
+## Links
+
+![npm version](https://img.shields.io/npm/v/create-vvt.svg)
+![npm downloads](https://img.shields.io/npm/dm/create-vvt.svg)
+
+[`npm pacakge-name：create-vvt`](https://www.npmjs.com/package/create-vvt)
+[`github repo-name: vite-vue3-ts-cli`](https://github.com/star-devil/vite-vue3-ts-cli/tree/cli)
 
 ## 特性
 

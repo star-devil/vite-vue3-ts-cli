@@ -1,6 +1,6 @@
 {
   "name": "create-vvt",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "type": "module",
   "description": "一个基于 Vite + Vue3 + TypeScript/JavaScript 的项目模板脚手架",
   "bin": {
@@ -26,11 +26,22 @@
     "web"
   ],
   "author": "egg",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/star-devil/vite-vue3-ts-cli/tree/cli"
+  },
+  "license": "MIT",
   "dependencies": {
     "chalk": "^5.4.1",
     "commander": "^13.1.0",
     "inquirer": "^12.4.3",
     "ora": "^8.2.0"
+  },
+  "publishConfig": {
+    "@star-devil:create-vvt": {
+      "registry": "https://npm.pkg.github.com"
+    },
+    "registry": "https://registry.npmjs.org"
   },
   "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }
