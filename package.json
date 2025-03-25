@@ -10,6 +10,10 @@
     "bin",
     "templates"
   ],
+  "scripts": {
+    "npm:publish": "npm publish",
+    "github:publish": "npm publish --registry=https://npm.pkg.github.com --scope=@star-devil"
+  },
   "keywords": [
     "Vite",
     "Vue3",
@@ -28,7 +32,11 @@
   "author": "egg",
   "repository": {
     "type": "git",
-    "url": "https://github.com/star-devil/vite-vue3-ts-cli/tree/cli"
+    "url": "git+https://github.com/star-devil/vite-vue3-ts-cli.git"
+  },
+  "homepage": "https://github.com/star-devil/vite-vue3-ts-cli/tree/cli",
+  "bugs": {
+    "url": "https://github.com/star-devil/vite-vue3-ts-cli/issues"
   },
   "license": "MIT",
   "dependencies": {
@@ -37,10 +45,11 @@
     "inquirer": "^12.4.3",
     "ora": "^8.2.0"
   },
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "publishConfig": {
-    "@star-devil:create-vvt": {
-      "registry": "https://npm.pkg.github.com"
-    },
+    "access": "public",
     "registry": "https://registry.npmjs.org"
   },
   "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
