@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "npm:publish": "npm publish",
-    "github:publish": "npm publish --registry=https://npm.pkg.github.com --scope=@star-devil"
+    "github:publish": "node publish-github.js"
   },
   "keywords": [
     "Vite",
