@@ -194,13 +194,6 @@ async function createProject(projectName) {
 }
 
 async function updateProjectFiles(root, selectedPlugins, projectInfo) {
-  const pkgPath = path.join(root, 'package.json');
-  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
-  // 更新项目信息
-  pkg.name = projectInfo.name;
-  pkg.description = projectInfo.description;
-  pkg.author = projectInfo.author;
-
   // 根据选择的语言决定入口文件的扩展名
   const mainExtension = projectInfo.language === 'typescript' ? '.ts' : '.js';
   const mainPath = path.join(root, `src/main${mainExtension}`);
@@ -297,14 +290,6 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
 
       fs.writeFileSync(commonPluginsPath, commonPlugins);
       fs.writeFileSync(mainPath, mainContent);
-    } else {
-      // 如果安装了 tailwindcss，删除 autoprefixer 插件（tw4自带）
-      if (fs.existsSync(cssConfigPath)) {
-        let cssConfig = fs.readFileSync(cssConfigPath, 'utf-8');
-        cssConfig = cssConfig.replace(/import autoprefixer.*;\n/, '');
-        cssConfig = cssConfig.replace(/\s*autoprefixer\({[^}]+}\),?\n?/, '');
-        fs.writeFileSync(cssConfigPath, cssConfig);
-      }
     }
   }
 
@@ -354,9 +339,14 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
   }
 }
 
-async function updatePackageJson(root, selectedPlugins) {
+async function updatePackageJson(root, selectedPlugins, projectInfo) {
   const pkgPath = path.join(root, 'package.json');
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+
+  // 更新项目信息
+  pkg.name = projectInfo.name;
+  pkg.description = projectInfo.description;
+  pkg.author = projectInfo.author;
 
   // 获取选中插件的依赖
   const devDependencies = {};
@@ -381,10 +371,6 @@ async function updatePackageJson(root, selectedPlugins) {
       });
     }
   });
-
-  // 如果安装了 tailwindcss，删除 autoprefixer 插件（tw4自带）
-  selectedPlugins.includes('tailwind') &&
-    delete pkg.devDependencies.autoprefixer;
 
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
 }
