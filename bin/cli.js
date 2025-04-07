@@ -219,7 +219,7 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
     if (!selectedPlugins.includes('pxtorem')) {
       const remUnitExtension =
         projectInfo.language === 'typescript' ? '.ts' : '.js';
-      const remUnitPath = path.join(root, `src/lib/remUnit${remUnitExtension}`);
+      const remUnitPath = path.join(root, `lib/remUnit${remUnitExtension}`);
       if (fs.existsSync(remUnitPath)) {
         fs.unlinkSync(remUnitPath);
         // 如果 lib 目录为空，也删除该目录
