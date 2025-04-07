@@ -1,6 +1,6 @@
 {
   "name": "create-vvt",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "type": "module",
   "description": "一个基于 Vite + Vue3 + TypeScript/JavaScript 的项目模板脚手架",
   "bin": {
