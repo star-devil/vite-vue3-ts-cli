@@ -236,7 +236,7 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
 
       cssConfig = cssConfig.replace(/import pxtorem.*;\n/, '');
       cssConfig = cssConfig.replace(/\s*pxtorem\({[^}]+}\),?\n?/, '');
-      mainContent = mainContent.replace(/import '\.\/lib\/remUnit';\n/, '');
+      mainContent = mainContent.replace(/import '\.\.\/lib\/remUnit';\n/, '');
     }
 
     // 处理 tailwindcss 插件
