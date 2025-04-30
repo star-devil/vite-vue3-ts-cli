@@ -1,6 +1,4 @@
 /*
- * @Author: wangqiaoling
- * @LastEditors: wangqiaoling
  * @Description: 首页路由
  */
 import { RouteRecordRaw } from 'vue-router';

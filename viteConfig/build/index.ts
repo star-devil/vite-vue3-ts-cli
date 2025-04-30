@@ -1,8 +1,4 @@
 /*
- * @Author: wangqiaoling
- * @Date: 2024-12-24 10:13:06
- * @LastEditTime: 2024-12-24 10:13:13
- * @LastEditors: wangqiaoling
  * @Description: 打包配置
  */
 import { BuildOptions } from 'vite';

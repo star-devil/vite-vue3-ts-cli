@@ -1,8 +1,4 @@
 /*
- * @Author: wangqiaoling
- * @Date: 2024-12-24 10:06:41
- * @LastEditTime: 2024-12-24 11:14:54
- * @LastEditors: wangqiaoling
  * @Description: 配置模块解析规则(别名)
  */
 import path from 'path';

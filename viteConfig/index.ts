@@ -1,10 +1,3 @@
-/*
- * @Author: wangqiaoling
- * @Date: 2024-12-24 10:44:27
- * @LastEditTime: 2024-12-24 10:48:08
- * @LastEditors: wangqiaoling
- * @Description:
- */
 import loadPlugins from './plugins';
 import loadViteResolve from './resolve';
 import loadViteServer from './server';

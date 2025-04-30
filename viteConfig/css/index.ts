@@ -1,8 +1,4 @@
 /*
- * @Author: wangqiaoling
- * @Date: 2024-12-24 10:27:28
- * @LastEditTime: 2024-12-24 10:38:34
- * @LastEditors: wangqiaoling
  * @Description: css 配置
  */
 import { CSSOptions } from 'vite';

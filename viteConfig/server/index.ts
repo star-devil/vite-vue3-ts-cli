@@ -1,8 +1,4 @@
 /*
- * @Author: wangqiaoling
- * @Date: 2024-12-24 10:03:50
- * @LastEditTime: 2024-12-24 10:04:43
- * @LastEditors: wangqiaoling
  * @Description: 开发服务器配置
  */
 import { ServerOptions } from 'vite';

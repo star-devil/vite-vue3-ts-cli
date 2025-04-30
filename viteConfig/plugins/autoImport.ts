@@ -1,9 +1,5 @@
 /*
- * @Author: wangqiaoling
- * @Date: 2024-12-24 10:14:12
- * @LastEditTime: 2024-12-24 10:16:31
- * @LastEditors: wangqiaoling
- * @Description: 自动导入
+ * @Description: 自动导入相关库方法
  */
 import AutoImport from 'unplugin-auto-import/vite';
 

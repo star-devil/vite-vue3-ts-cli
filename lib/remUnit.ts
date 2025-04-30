@@ -1,8 +1,4 @@
 /*
- * @Author: wangqiaoling
- * @Date: 2024-12-06 14:55:37
- * @LastEditTime: 2024-12-06 14:56:55
- * @LastEditors: wangqiaoling
  * @Description: 根目录 rem 适配脚本
  */
 

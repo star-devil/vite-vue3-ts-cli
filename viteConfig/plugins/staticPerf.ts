@@ -1,8 +1,4 @@
 /*
- * @Author: wangqiaoling
- * @Date: 2024-12-24 10:24:08
- * @LastEditTime: 2024-12-24 10:26:41
- * @LastEditors: wangqiaoling
  * @Description: 静态资源优化
  */
 import viteImagemin from 'vite-plugin-imagemin';
