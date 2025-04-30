@@ -6,7 +6,8 @@ export default function () {
   const plugins = [
     ...setupCommonPlugins(),
     setupAutoImport(),
-    setupStaticPerf()
+    setupAutoImportComponents(),
+    ...setupStaticPerf()
   ];
 
   return plugins;
