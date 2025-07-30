@@ -1,18 +1,28 @@
-import { BuildOptions } from 'vite';
+import type { BuildOptions } from 'vite';
+import { pathResolve } from '../utils';
 
-export default function (env: Record<string, string>, mode: string) {
+export default function (mode: string) {
   const build: BuildOptions = {
     target: ['esnext'],
-    outDir: mode === 'production' ? 'dist' : `dist-${mode}`,
-    assetsDir: 'assets',
-    sourcemap: env.VITE_BUILD_SOURCEMAP === 'true',
-    chunkSizeWarningLimit: 1500,
+    outDir: mode === 'development' ? 'dist' : `dist-${mode}`,
+    sourcemap: false,
+    chunkSizeWarningLimit: 4000,
     rollupOptions: {
+      input: {
+        index: pathResolve('../../index.html', import.meta.url)
+      },
       // 配置打包文件分类输出
       output: {
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
+        chunkFileNames: 'static/js/[name]-[hash].js',
+        entryFileNames: 'static/js/[name]-[hash].js',
+        // ⚠️ 注意：如果一些资源在打包后无法找到文件（浏览器无法正确处理），那么需要在这里取消 hash 命名，使文件保持原名
+        assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
+        // 将 node_modules 中的依赖打包到单独的 chunk 中
+        manualChunks: (id: string) => {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        }
       }
     }
   };

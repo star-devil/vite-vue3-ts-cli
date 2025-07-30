@@ -5,6 +5,9 @@
     "lib": ["ES2023"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
 
     /* Bundler mode */
     "moduleResolution": "Bundler",
@@ -20,5 +23,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "viteConfig/**/*.ts", "types/*.d.ts"],
+  "exclude": ["dist", "**/*.js", "node_modules"]
 }

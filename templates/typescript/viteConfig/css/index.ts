@@ -1,4 +1,4 @@
-import { CSSOptions } from 'vite';
+import type { CSSOptions } from 'vite';
 import autoprefixer from 'autoprefixer';
 // @ts-expect-error postcss-pxtorem还没有官方的ts包
 import pxtorem from 'postcss-pxtorem';

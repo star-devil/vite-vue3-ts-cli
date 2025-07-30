@@ -9,52 +9,55 @@
     "lint:prettier": "prettier --write  \"./**/*.{js,ts,json,tsx,css,scss,vue,html,md}\"",
     "lint:stylelint": "stylelint --fix \"./**/*.{html,vue,css,scss}\"",
     "lint": "pnpm lint:eslint && pnpm lint:prettier && pnpm lint:stylelint",
-    "build": "vue-tsc -b && vite build",
+    "build": "vue-tsc -b && vite build --mode development",
+    "build:prod": "vue-tsc -b && vite build --mode production",
     "preview": "vite preview",
     "commitlint": "commitlint --config commitlint.config.ts -e -V",
     "prepare": "husky",
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
-    "pinia": "^2.3.0",
-    "pinia-plugin-persistedstate": "^4.2.0",
-    "vue": "^3.5.12",
-    "vue-router": "4"
+    "dayjs": "^1.11.13",
+    "pinia": "^3.0.3",
+    "pinia-plugin-persistedstate": "^4.4.1",
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.6.0",
-    "@commitlint/config-conventional": "^19.6.0",
-    "@eslint/js": "^9.14.0",
-    "@types/node": "^22.9.0",
-    "@vitejs/plugin-vue": "^5.1.4",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@eslint/js": "^9.32.0",
+    "@types/node": "^22.16.5",
+    "@vitejs/plugin-vue": "^5.2.4",
     "autoprefixer": "^10.4.21",
-    "eslint": "^9.14.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^9.1.2",
     "eslint-plugin-markdown": "^5.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-vue": "^9.30.0",
-    "globals": "^15.12.0",
+    "eslint-plugin-prettier": "^5.5.3",
+    "eslint-plugin-vue": "^9.33.0",
+    "globals": "^15.15.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.2.10",
-    "postcss-html": "^1.7.0",
+    "lint-staged": "^15.5.2",
+    "postcss-html": "^1.8.0",
     "postcss-pxtorem": "^6.1.0",
     "prettier": "3.3.3",
-    "sass-embedded": "^1.82.0",
-    "stylelint": "^16.10.0",
+    "sass-embedded": "^1.89.2",
+    "stylelint": "^16.22.0",
     "stylelint-config-html": "^1.1.0",
     "stylelint-config-recess-order": "^5.1.1",
     "stylelint-config-standard-scss": "^13.1.0",
     "stylelint-config-standard-vue": "^1.0.0",
-    "tailwindcss": "3",
-    "typescript": "~5.6.2",
-    "typescript-eslint": "^8.13.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.6.3",
+    "typescript-eslint": "^8.38.0",
     "unplugin-auto-import": "^0.18.6",
     "unplugin-vue-components": "^0.27.5",
-    "vite": "^5.4.10",
-    "vite-plugin-eslint2": "^5.0.2",
+    "vite": "^5.4.19",
+    "vite-plugin-compression2": "^2.2.0",
+    "vite-plugin-eslint2": "^5.0.4",
     "vite-plugin-imagemin": "^0.6.1",
     "vite-svg-loader": "^5.1.0",
-    "vue-tsc": "^2.1.8"
+    "vue-tsc": "^2.2.12"
   },
   "keywords": [
     "Vite",
@@ -64,7 +67,8 @@
   ],
   "author": "egg",
   "engines": {
-    "node": ">=20"
+    "node": ">=21",
+    "pnpm": ">=9.15.4"
   },
   "browserslist": [
     "> 1%",
@@ -92,6 +96,5 @@
     "*.md": [
       "prettier --write"
     ]
-  },
-  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
+  }
 }

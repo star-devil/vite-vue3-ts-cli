@@ -3,13 +3,17 @@ import setupAutoImport from './autoImport';
 import setupCommonPlugins from './common';
 import setupStaticPerf from './staticPerf';
 import setupAutoImportComponents from './autoComponents';
+import setupConfigCompressPlugin from './compress';
+import setupViteBuildInfo from './buildInfo';
 
-export default function () {
+export default function (VITE_COMPRESSION: ViteCompression) {
   const plugins: PluginOption[] = [
     ...setupCommonPlugins(),
     setupAutoImport(),
     setupAutoImportComponents(),
-    ...setupStaticPerf()
+    ...setupStaticPerf(),
+    ...setupConfigCompressPlugin(VITE_COMPRESSION),
+    setupViteBuildInfo()
   ];
 
   return plugins;
