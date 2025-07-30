@@ -1,14 +1,10 @@
-/*
- * @Description: css 配置
- */
-import { CSSOptions } from 'vite';
+import type { CSSOptions } from 'vite';
 import autoprefixer from 'autoprefixer';
 // @ts-expect-error postcss-pxtorem还没有官方的ts包
 import pxtorem from 'postcss-pxtorem';
 import tailwindcss from 'tailwindcss';
 
 export default function (): CSSOptions {
-  // 别名配置相对于当前文件路径
   const preprocessorOptions = {
     scss: {
       api: 'modern-compiler',

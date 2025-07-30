@@ -1,23 +1,23 @@
-/*
- * @Description: 开发服务器配置
- */
-import { ServerOptions } from 'vite';
+import type { ServerOptions } from 'vite';
 
-export default function (env: Record<string, string>) {
+export default function (
+  VITE_PORT: number,
+  VITE_PROXY: string,
+  VITE_SERVER_URL: string
+) {
   const server: ServerOptions = {
     // 服务器主机名，如果允许外部访问，可设置为"0.0.0.0"
     host: '0.0.0.0',
     // 服务器端口号
-    port: env.VITE_APP_PORT as unknown as number,
+    port: VITE_PORT,
     // 是否自动打开浏览器
-    // open: true,
+    open: true,
     proxy: {
-      // '/api'
-      [env.VITE_APP_BASE_API]: {
-        target: env.VITE_API_URL, //  代理的请求服务器地址
+      [VITE_PROXY]: {
+        target: VITE_SERVER_URL, //  代理的请求服务器地址
         changeOrigin: true, // 跨域
         rewrite: (path: string) =>
-          path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
+          path.replace(new RegExp('^' + VITE_PROXY), '')
       }
     }
   };

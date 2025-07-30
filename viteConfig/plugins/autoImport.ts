@@ -1,6 +1,3 @@
-/*
- * @Description: 自动导入相关库方法
- */
 import AutoImport from 'unplugin-auto-import/vite';
 
 export default function setupAutoImport() {

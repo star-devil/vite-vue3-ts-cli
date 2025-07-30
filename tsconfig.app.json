@@ -24,7 +24,8 @@
     "moduleDetection": "force",
     "esModuleInterop": true, // 支持导入 CommonJs 模块
     "noEmit": true, // 不输出文件,即编译后不会生成任何js文件
-    "jsx": "preserve", //在 `.tsx`文件里支持JSX： `"React"`或 `"Preserve"`
+    "jsx": "preserve", // 在 Vue 中使用 TSX
+    "jsxImportSource": "vue", // 指定JSX工厂函数或导入的模块
 
     /* Linting */
     "strict": true,
@@ -34,11 +35,11 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
-    "types/**/*.d.ts",
     "viteConfig/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "auto-import.d.ts"
-  ]
+    "types/*.d.ts"
+  ],
+  "exclude": ["node_modules"]
 }

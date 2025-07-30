@@ -1,8 +1,5 @@
-/*
- * @Description: 静态资源优化
- */
 import viteImagemin from 'vite-plugin-imagemin';
-import VitePluginSvgSpritemap from '@spiriit/vite-plugin-svg-spritemap';
+import svgLoader from 'vite-svg-loader';
 
 export default function setupStaticPerf() {
   return [
@@ -35,12 +32,6 @@ export default function setupStaticPerf() {
         ]
       }
     }),
-    VitePluginSvgSpritemap('./src/assets/icons/*.svg', {
-      prefix: 'sprites_icon-',
-      output: {
-        view: true,
-        use: true
-      }
-    })
+    svgLoader()
   ];
 }

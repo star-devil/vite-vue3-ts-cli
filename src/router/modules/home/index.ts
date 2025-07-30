@@ -1,9 +1,4 @@
-/*
- * @Description: 首页路由
- */
-import { RouteRecordRaw } from 'vue-router';
-
-const homeRoutes: RouteRecordRaw[] = [
+const homeRoutes = [
   {
     path: '/',
     name: 'HelloWorld',

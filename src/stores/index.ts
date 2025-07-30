@@ -1,6 +1,3 @@
-/*
- * @Description: pinia持久化配置
- */
 import { createPersistedState } from 'pinia-plugin-persistedstate';
 
 const pinia = createPinia();

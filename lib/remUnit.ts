@@ -1,7 +1,3 @@
-/*
- * @Description: 根目录 rem 适配脚本
- */
-
 class RemAdapter {
   private designWidth: number;
   private rootValue: number;
