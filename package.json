@@ -69,7 +69,19 @@
     "TypeScript",
     "Web"
   ],
-  "author": "egg",
+  "homepage": "https://github.com/star-devil/vite-vue3-ts-cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/star-devil/vite-vue3-ts-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/star-devil/vite-vue3-ts-cli/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "star-devil",
+    "url": "https://github.com/star-devil"
+  },
   "engines": {
     "node": ">=21",
     "pnpm": ">=9.15.4"
