@@ -1,17 +1,24 @@
-/** @format */
-
 import pluginJs from '@eslint/js';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import markdown from 'eslint-plugin-markdown';
-import prettierPlugin from 'eslint-plugin-prettier';
 import pluginVue from 'eslint-plugin-vue';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
+import markdown from 'eslint-plugin-markdown';
 import globals from 'globals';
 import autoImport from './.eslintrc-auto-import.json' with { type: 'json' };
+import { defineConfig, globalIgnores } from 'eslint/config';
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
-  // 1. 配置全局变量
+export default defineConfig([
+  globalIgnores([
+    '**/.*',
+    '**/dist/**',
+    '*.d.ts',
+    'public/*',
+    'src/assets/**',
+    'src/**/iconfont/**'
+  ]),
+  // 1. 配置全局变量,js配置
   {
+    ...pluginJs.configs.recommended,
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -20,22 +27,32 @@ export default [
         ...globals.es2021,
         ...autoImport.globals
       }
-    }
-  },
-  // 2. JavaScript 文件配置
-  pluginJs.configs.recommended,
-  {
-    files: ['**/*.{mjs,cjs,js}'],
+    },
     plugins: {
       prettier: prettierPlugin
     },
     rules: {
       // 关闭 与prettier冲突的规则
-      ...eslintConfigPrettier.rules
+      ...eslintConfigPrettier.rules,
+      ...prettierPlugin.configs.recommended.rules,
+      'no-debugger': 'off',
+      'no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_'
+        }
+      ],
+      'prettier/prettier': [
+        'error',
+        {
+          endOfLine: 'auto'
+        }
+      ]
     }
   },
 
-  // 3.  vue 配置
+  // 2.  vue 配置
   ...pluginVue.configs['flat/recommended'],
   {
     files: ['**/*.vue'],
@@ -44,16 +61,35 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
+        extraFileExtensions: ['.vue'],
         ecmaFeatures: {
           jsx: true
         }
       }
     },
+    plugins: {
+      vue: pluginVue
+    },
+    processor: pluginVue.processors['.vue'],
     /** @link https://eslint.vuejs.org/rules/ */
     rules: {
-      'vue/no-v-model-argument': 'off', // 关闭对 `v-model` 参数使用的规则。
+      'no-undef': 'off', // 关闭未定义变量规则
+      'no-unused-vars': 'off', // 关闭未使用变量规则
+      'vue/no-v-model-argument': 'off', // 关闭对 `v-model` 参数使用的规则
+      'vue/no-v-html': 'off', // 关闭对 `v-html` 使用的规则
       'vue/component-name-in-template-casing': ['error', 'PascalCase'], // 模板中组件名大小写
-      // HTML标签闭合括号的空格
+      'vue/html-self-closing': [
+        'error',
+        {
+          html: {
+            void: 'always',
+            normal: 'always',
+            component: 'always'
+          },
+          svg: 'always',
+          math: 'always'
+        }
+      ], // HTML标签自闭合
       'vue/html-closing-bracket-spacing': [
         'error',
         {
@@ -61,31 +97,28 @@ export default [
           endTag: 'never',
           selfClosingTag: 'always'
         }
-      ],
-      // 第一个属性的换行
+      ], // HTML标签闭合括号的空格
       'vue/first-attribute-linebreak': [
         'error',
         {
           singleline: 'ignore',
           multiline: 'below' // below | ignore | off
         }
-      ],
-      // HTML标签闭合括号的换行
+      ], // 第一个属性的换行
       'vue/html-closing-bracket-newline': [
         'error',
         {
           singleline: 'never',
           multiline: 'always' // never 强制闭合括号在同一行
         }
-      ],
-      // 禁止重复的属性名
+      ], // HTML标签闭合括号的换行
       'vue/no-duplicate-attributes': [
         'error',
         {
           allowCoexistClass: true,
           allowCoexistStyle: true
         }
-      ],
+      ], // 禁止重复的属性名
       /**
        * component 组件相关规则
        */
@@ -107,6 +140,7 @@ export default [
       /**
        * props 模板相关规则
        */
+      'vue/no-setup-props-reactivity-loss': 'off', // 关闭对 `setup` 中 `props` 响应性丢失的规则
       'vue/prop-name-casing': 'off', // 关闭 `prop` 名称大小写规则的检查
       'vue/require-default-prop': 'off', // 关闭要求组件 `prop` 必须有默认值的规则
       'vue/require-prop-types': 'off', // 关闭要求组件 `prop` 必须有类型定义的规则
@@ -114,6 +148,7 @@ export default [
       /**
        * 其它规则
        */
+      'vue/require-explicit-emits': 'off', // 关闭对 `emits` 必须显式声明的规则
       'vue/no-async-in-computed-properties': 'error', // 不允许在计算属性中使用async
       'vue/no-extra-parens': ['error', 'all'], // 不允许使用多余的括号
       'vue/multiline-ternary': ['error', 'always-multiline'], // 要求多行三元运算符的换行
@@ -126,10 +161,10 @@ export default [
     }
   },
 
-  // 4. markdown配置
+  // 3. markdown配置
   ...markdown.configs.recommended,
 
-  // 5. 通用规则
+  // 4. 通用规则
   {
     rules: {
       'no-var': 'error', // 不允许使用var定义
@@ -139,8 +174,6 @@ export default [
       'no-multiple-empty-lines': ['warn', { max: 1 }], // 不允许多个空行
       'no-unexpected-multiline': 'error', // 禁止空余的多行
       eqeqeq: ['error', 'smart'], // 比较的时候使用严格等于
-      curly: ['error', 'all'], // 强制使用花括号的风格
-      'default-case': 'off', // 要求 switch 语句中有 default 分支
       'switch-colon-spacing': ['error', { before: false, after: true }], // switch 冒号后要有空格
       'brace-style': ['error', '1tbs', { allowSingleLine: true }], // 大括号风格 ["error", "1tbs"]
       'no-dupe-keys': 'error', // 对象中不允许出现重复的键
@@ -152,22 +185,5 @@ export default [
       'no-func-assign': 'error', // 禁止重复的函数声明
       'no-shadow': 'error' // 外部作用域中的变量不能与它所包含的作用域中的变量或参数同名
     }
-  },
-  // 定义忽略内容
-  {
-    ignores: [
-      '**/node_modules/**',
-      '**/dist/**',
-      '**/build/**',
-      'public/',
-      '*.md',
-      '.local',
-      '.git',
-      '.vscode',
-      '.husky',
-      'Dockerfile',
-      'package-lock.json',
-      'pnpm-lock.yaml'
-    ]
   }
-];
+]);

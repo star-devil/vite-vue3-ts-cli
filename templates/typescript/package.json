@@ -71,6 +71,7 @@
     "Vite",
     "Vue3",
     "TypeScript",
+    "tailwindcss",
     "Web"
   ],
   "homepage": "https://github.com/star-devil/vite-vue3-ts-cli",
@@ -115,6 +116,11 @@
     ],
     "*.md": [
       "prettier --write"
+    ]
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "@tailwindcss/oxide"
     ]
   }
 }

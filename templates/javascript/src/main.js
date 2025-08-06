@@ -6,4 +6,4 @@ import '../lib/remUnit';
 import pinia from './stores';
 import router from './router/index';
 
-createApp(App).use(pinia).use(router).mount('#app'); 
+createApp(App).use(pinia).use(router).mount('#app');
