@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import './tailwind.css';
-import './scss/style.scss';
+import './styles/style.scss';
+import './styles/tailwind.css';
 import '../lib/remUnit';
 import pinia from './stores';
 import router from './router/ index';

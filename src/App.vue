@@ -4,7 +4,7 @@ import ViteView from '@assets/icons/vite.svg';
 </script>
 
 <template>
-  <div>
+  <div class="logo-container">
     <a href="https://vite.dev" target="_blank">
       <ViteView width="40" height="40" class="logo" />
     </a>
@@ -16,8 +16,15 @@ import ViteView from '@assets/icons/vite.svg';
 </template>
 
 <style scoped lang="scss">
-.logo {
-  display: inline-block;
-  margin: 20px;
+.logo-container {
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 20vh;
+  text-align: center;
+
+  .logo {
+    display: inline-block;
+    margin: 20px;
+  }
 }
 </style>
