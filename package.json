@@ -1,6 +1,6 @@
 {
   "name": "create-vvt",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "type": "module",
   "description": "一个基于 Vite + Vue3 + TypeScript/JavaScript 的项目模板脚手架",
   "bin": {
@@ -12,6 +12,8 @@
   ],
   "scripts": {
     "npm:publish": "npm publish",
+    "npm:publish:beta": "npm publish --tag beta",
+    "npm:publish:stable": "npm publish --tag stable",
     "github:publish": "node publish-github.js"
   },
   "keywords": [
@@ -46,11 +48,11 @@
     "ora": "^8.2.0"
   },
   "engines": {
-    "node": ">=21"
+    "node": ">=21",
+    "pnpm": ">=9.15.4"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
-  },
-  "packageManager": "pnpm@>=9.15.0"
+  }
 }
