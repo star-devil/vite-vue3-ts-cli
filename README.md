@@ -68,16 +68,16 @@ pnpm create vvt [项目名称]
 ├── .husky/            # Git Hooks
 ├── .vscode/           # VS Code 配置
 ├── lib/               # 工具库
+├── nginx/             # Nginx 配置
 ├── public/            # 公共资源
 ├── src/
 │   ├── assets/         # 静态资源
 │   ├── components/     # 公共组件
 │   ├── router/         # 路由配置
-│   ├── scss/           # SCSS 样式
 │   ├── stores/         # Pinia 状态管理
+│   ├── styles/         # 公共样式、tailwindcss配置(安装了tailwindcss时才会有)
 │   ├── App.vue         # 根组件
 │   ├── main.ts         # 入口文件
-│   ├── tailwind.css?   # TailwindCSS 配置(安装了tailwindcss时才会有)
 │   └── vite-env.d.ts   # Vite 类型声明
 ├── types/             # 类型声明文件(主要是自动导入的声明)
 ├── viteConfig/        # Vite 配置模块
@@ -88,10 +88,10 @@ pnpm create vvt [项目名称]
 ├── .prettierrc        # Prettier 配置
 ├── .stylelintrc.json  # Stylelint 配置
 ├── commitlint.config.ts    # Git Commit 信息规范化配置
+├── Dockerfile          # Docker 镜像配置
 ├── eslint.config.js   # ESLint 配置
 ├── index.html         # 入口 HTML 文件
 ├── package.json       # 项目依赖和脚本
-├── tailwind.config.ts # TailwindCSS 配置(安装了tailwindcss时才会有)
 ├── tsconfig.app.json  # TypeScript 配置
 ├── tsconfig.json      # TypeScript 配置
 ├── tsconfig.node.json # TypeScript 配置
