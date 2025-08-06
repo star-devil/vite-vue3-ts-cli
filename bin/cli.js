@@ -225,7 +225,7 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
         // 如果 lib 目录为空，也删除该目录
         const libDir = path.dirname(remUnitPath);
         if (fs.readdirSync(libDir).length === 0) {
-          fs.rmdirSync(libDir);
+          fs.rmSync(libDir, { recursive: true });
         }
       }
 
@@ -239,58 +239,53 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
       mainContent = mainContent.replace(/import '\.\.\/lib\/remUnit';\n/, '');
     }
 
-    // 处理 tailwindcss 插件
-    if (!selectedPlugins.includes('tailwind')) {
-      cssConfig = cssConfig.replace(/import tailwindcss.*;\n/, '');
-      cssConfig = cssConfig.replace(/\s*tailwindcss\(\),?\n?/, '');
-      mainContent = mainContent.replace(/import '\.\/tailwind.css';\n/, '');
-
-      const tailwindPath = path.join(root, 'src/tailwind.css');
-      if (fs.existsSync(tailwindPath)) {
-        fs.unlinkSync(tailwindPath);
-      }
-
-      const tailwindConfigExtension =
-        projectInfo.language === 'typescript' ? '.ts' : '.js';
-      const tailwindConfigPath = path.join(
-        root,
-        `tailwind.config${tailwindConfigExtension}`
-      );
-      if (fs.existsSync(tailwindConfigPath)) {
-        fs.unlinkSync(tailwindConfigPath);
-      }
-    }
-
     fs.writeFileSync(cssConfigPath, cssConfig);
     fs.writeFileSync(mainPath, mainContent);
   }
 
-  const commonPluginsExtension =
-    projectInfo.language === 'typescript' ? '.ts' : '.js';
-  const commonPluginsPath = path.join(
-    root,
-    `viteConfig/plugins/common${commonPluginsExtension}`
-  );
-  if (fs.existsSync(commonPluginsPath)) {
-    let commonPlugins = fs.readFileSync(commonPluginsPath, 'utf-8');
-    // 处理 tailwindcss 插件
-    if (!selectedPlugins.includes('tailwind')) {
-      // 处理tailwindcss导入，路径可能在JavaScript和TypeScript中不同
-      commonPlugins = commonPlugins.replace(
-        /import ['"]@tailwindcss\/vite['"];\n/,
+  // 处理 tailwindcss 插件
+  if (!selectedPlugins.includes('tailwind')) {
+    // 删除 tailwind.css 文件
+    const tailwindPath = path.join(root, 'src/styles/tailwind.css');
+    if (fs.existsSync(tailwindPath)) {
+      fs.unlinkSync(tailwindPath);
+    }
+
+    // 删除 tailwindcss.ts/js 配置文件
+    const tailwindConfigExtension =
+      projectInfo.language === 'typescript' ? '.ts' : '.js';
+    const tailwindPluginPath = path.join(
+      root,
+      `viteConfig/plugins/tailwindcss${tailwindConfigExtension}`
+    );
+    if (fs.existsSync(tailwindPluginPath)) {
+      fs.unlinkSync(tailwindPluginPath);
+    }
+
+    // 从 main.ts/js 中移除 tailwind.css 导入
+    mainContent = mainContent.replace(
+      /import '\.\/styles\/tailwind\.css';\n/,
+      ''
+    );
+
+    // 从 plugins/index.ts/js 中移除 tailwindcss 相关导入和调用
+    const pluginsIndexPath = path.join(
+      root,
+      `viteConfig/plugins/index${tailwindConfigExtension}`
+    );
+    if (fs.existsSync(pluginsIndexPath)) {
+      let pluginsIndex = fs.readFileSync(pluginsIndexPath, 'utf-8');
+      // 删除导入语句
+      pluginsIndex = pluginsIndex.replace(
+        /import setupTailwindcss from '\.\/tailwindcss';\n/,
         ''
       );
-      commonPlugins = commonPlugins.replace(/\s*tailwindcss\(\),?\n?/, '');
-      mainContent = mainContent.replace(/import '\.\/tailwind.css';\n/, '');
-
-      const tailwindPath = path.join(root, 'src/tailwind.css');
-      if (fs.existsSync(tailwindPath)) {
-        fs.unlinkSync(tailwindPath);
-      }
-
-      fs.writeFileSync(commonPluginsPath, commonPlugins);
-      fs.writeFileSync(mainPath, mainContent);
+      // 删除函数调用
+      pluginsIndex = pluginsIndex.replace(/,?\s*setupTailwindcss\(\)/, '');
+      fs.writeFileSync(pluginsIndexPath, pluginsIndex);
     }
+
+    fs.writeFileSync(mainPath, mainContent);
   }
 
   const staticPerfConfigExtension =
@@ -307,14 +302,16 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
       const appVuePath = path.join(root, 'src/App.vue');
       if (fs.existsSync(appVuePath)) {
         let appContent = fs.readFileSync(appVuePath, 'utf-8');
-        // 删除 import 语句
-        appContent = appContent.replace(/import VueView.*;\n/, '');
-        appContent = appContent.replace(/import ViteView.*;\n/, '');
-        // 删除<script>标签 - 确保能匹配任何script标签
+        // 删除 SVG 组件的 import 语句
         appContent = appContent.replace(
-          /<script(\s+setup)?(\s+lang="ts")?>\s*[\s\S]*?<\/script>/,
+          /import VueView from '@assets\/icons\/vue\.svg';\n/,
           ''
         );
+        appContent = appContent.replace(
+          /import ViteView from '@assets\/icons\/vite\.svg';\n/,
+          ''
+        );
+
         // 替换 SVG 组件为 img 标签
         appContent = appContent.replace(
           /<ViteView width="40" height="40" class="logo" \/>/,

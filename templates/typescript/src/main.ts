@@ -4,6 +4,6 @@ import './styles/style.scss';
 import './styles/tailwind.css';
 import '../lib/remUnit';
 import pinia from './stores';
-import router from './router/ index';
+import router from './router/index';
 
 createApp(App).use(pinia).use(router).mount('#app');
