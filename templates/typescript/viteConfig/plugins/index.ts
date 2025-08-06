@@ -5,6 +5,7 @@ import setupStaticPerf from './staticPerf';
 import setupAutoImportComponents from './autoComponents';
 import setupConfigCompressPlugin from './compress';
 import setupViteBuildInfo from './buildInfo';
+import setupTailwindcss from './tailwindcss';
 
 export default function (VITE_COMPRESSION: ViteCompression) {
   const plugins: PluginOption[] = [
@@ -13,7 +14,8 @@ export default function (VITE_COMPRESSION: ViteCompression) {
     setupAutoImportComponents(),
     ...setupStaticPerf(),
     ...setupConfigCompressPlugin(VITE_COMPRESSION),
-    setupViteBuildInfo()
+    setupViteBuildInfo(),
+    setupTailwindcss()
   ];
 
   return plugins;

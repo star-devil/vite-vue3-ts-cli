@@ -40,7 +40,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
     // 依赖预构建配置
     optimizeDeps: loadOptimizeDeps,
     // 构建配置
-    build: loadViteBuild(mode),
+    build: loadViteBuild(),
     define: {
       __APP_INFO__: JSON.stringify(__APP_INFO__)
     }

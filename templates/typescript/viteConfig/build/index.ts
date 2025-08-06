@@ -1,10 +1,10 @@
 import type { BuildOptions } from 'vite';
 import { pathResolve } from '../utils';
 
-export default function (mode: string) {
+export default function () {
   const build: BuildOptions = {
     target: ['esnext'],
-    outDir: mode === 'development' ? 'dist' : `dist-${mode}`,
+    outDir: 'dist',
     sourcemap: false,
     chunkSizeWarningLimit: 4000,
     rollupOptions: {

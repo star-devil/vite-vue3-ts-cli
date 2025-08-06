@@ -11,7 +11,7 @@ const colors = {
   magenta: '\x1b[35m'
 };
 const LINK =
-  'https://github.com/star-devil/learning-Docs/blob/master/%E4%BB%8E%E5%A4%B4%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAvite%E9%A1%B9%E7%9B%AE.md';
+  'https://github.com/star-devil/learning-Docs/blob/master/%E7%BB%84%E4%BB%B6%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8/%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAvue%E8%84%9A%E6%89%8B%E6%9E%B6.md';
 
 export default function setupViteBuildInfo(): Plugin {
   let config: { command: string };

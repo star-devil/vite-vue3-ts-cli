@@ -4,14 +4,19 @@
   "type": "module",
   "description": "一个基于 Vite + Vue3 + TypeScript 的项目模板",
   "scripts": {
-    "dev": "vite",
-    "lint:eslint": "eslint . --ext .vue,.js,.ts,.tsx,.jsx --fix",
-    "lint:prettier": "prettier --write  \"./**/*.{js,ts,json,tsx,css,scss,vue,html,md}\"",
-    "lint:stylelint": "stylelint --fix \"./**/*.{html,vue,css,scss}\"",
-    "lint": "pnpm lint:eslint && pnpm lint:prettier && pnpm lint:stylelint",
-    "build": "vue-tsc -b && vite build --mode development",
-    "build:prod": "vue-tsc -b && vite build --mode production",
+    "dev": "NODE_OPTIONS=--max-old-space-size=4096 vite",
+    "typecheck": "tsc --noEmit && vue-tsc --noEmit --skipLibCheck",
+    "svgo": "svgo -f . -r",
+    "build": "rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build --mode development",
+    "build:prod": "rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build --mode production",
+    "report": "rimraf dist && vite build",
     "preview": "vite preview",
+    "preview:build": "pnpm build && vite preview",
+    "clean:cache": "rimraf .eslintcache && rimraf pnpm-lock.yaml && rimraf node_modules && pnpm store prune && pnpm install",
+    "lint:eslint": "eslint --cache --max-warnings 0  \"{src,viteConfig,lib}/**/*.{vue,js,jsx,ts,tsx}\" --fix",
+    "lint:prettier": "prettier --write  \"src/**/*.{js,ts,json,tsx,css,scss,vue,html,md}\"",
+    "lint:stylelint": "stylelint --cache --fix \"**/*.{html,vue,css,scss}\" --cache-location node_modules/.cache/stylelint/",
+    "lint": "pnpm lint:eslint && pnpm lint:prettier && pnpm lint:stylelint",
     "commitlint": "commitlint --config commitlint.config.ts -e -V",
     "prepare": "husky",
     "preinstall": "npx only-allow pnpm"
@@ -27,6 +32,7 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.32.0",
+    "@tailwindcss/vite": "^4.1.11",
     "@types/node": "^22.16.5",
     "@vitejs/plugin-vue": "^5.2.4",
     "autoprefixer": "^10.4.21",
@@ -41,13 +47,15 @@
     "postcss-html": "^1.8.0",
     "postcss-pxtorem": "^6.1.0",
     "prettier": "3.3.3",
+    "rimraf": "^6.0.1",
     "sass-embedded": "^1.89.2",
     "stylelint": "^16.22.0",
     "stylelint-config-html": "^1.1.0",
     "stylelint-config-recess-order": "^5.1.1",
     "stylelint-config-standard-scss": "^13.1.0",
     "stylelint-config-standard-vue": "^1.0.0",
-    "tailwindcss": "^3.4.17",
+    "svgo": "^4.0.0",
+    "tailwindcss": "^4.1.11",
     "typescript": "~5.6.3",
     "typescript-eslint": "^8.38.0",
     "unplugin-auto-import": "^0.18.6",
@@ -55,7 +63,7 @@
     "vite": "^5.4.19",
     "vite-plugin-compression2": "^2.2.0",
     "vite-plugin-eslint2": "^5.0.4",
-    "vite-plugin-imagemin": "^0.6.1",
+    "vite-plugin-minipic": "^1.3.1",
     "vite-svg-loader": "^5.1.0",
     "vue-tsc": "^2.2.12"
   },
@@ -65,7 +73,19 @@
     "TypeScript",
     "Web"
   ],
-  "author": "egg",
+  "homepage": "https://github.com/star-devil/vite-vue3-ts-cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/star-devil/vite-vue3-ts-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/star-devil/vite-vue3-ts-cli/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "star-devil",
+    "url": "https://github.com/star-devil"
+  },
   "engines": {
     "node": ">=21",
     "pnpm": ">=9.15.4"

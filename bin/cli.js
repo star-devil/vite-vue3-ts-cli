@@ -22,11 +22,11 @@ const PLUGINS = [
     }
   },
   {
-    name: 'tailwindcss（v3.x）',
+    name: 'tailwindcss（v4.x）',
     value: 'tailwind',
     description: '功能优先的 CSS 框架',
     devDependencies: {
-      tailwindcss: '3'
+      tailwindcss: '^4.1.11'
     }
   },
   {

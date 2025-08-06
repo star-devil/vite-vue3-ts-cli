@@ -60,7 +60,6 @@ const wrapperEnv = (envConf: Recordable): ViteEnv => {
     VITE_PROXY: '',
     VITE_SERVER_URL: ''
   };
-  console.log('envConf---', envConf);
   for (const envName of Object.keys(envConf)) {
     let realName = envConf[envName].replace(/\\n/g, '\n');
     realName =
