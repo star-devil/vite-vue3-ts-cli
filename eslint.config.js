@@ -1,6 +1,7 @@
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import pluginVue from 'eslint-plugin-vue';
+import * as parserVue from 'vue-eslint-parser';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
 import markdown from 'eslint-plugin-markdown';
@@ -55,7 +56,7 @@ export default defineConfig([
   // 2. typescript 配置
   ...tseslint.config({
     extends: [...tseslint.configs.recommended],
-    files: ['**/*.ts', '**/*.vue', '**/*.?([cm])ts', '**/*.?([cm])tsx'],
+    files: ['**/*.?([cm])ts', '**/*.?([cm])tsx'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -98,7 +99,16 @@ export default defineConfig([
   {
     files: ['**/*.vue'],
     languageOptions: {
-      parser: pluginVue.parser, // 用于解析 <template> 中的 Vue 模板
+      globals: {
+        $: 'readonly',
+        $$: 'readonly',
+        $computed: 'readonly',
+        $customRef: 'readonly',
+        $ref: 'readonly',
+        $shallowRef: 'readonly',
+        $toRef: 'readonly'
+      },
+      parser: parserVue,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
@@ -119,7 +129,6 @@ export default defineConfig([
     rules: {
       'no-undef': 'off', // 关闭未定义变量规则
       'no-unused-vars': 'off', // 关闭未使用变量规则
-      'vue/no-v-model-argument': 'off', // 关闭对 `v-model` 参数使用的规则
       'vue/no-v-html': 'off', // 关闭对 `v-html` 使用的规则
       'vue/component-name-in-template-casing': ['error', 'PascalCase'], // 模板中组件名大小写
       'vue/html-self-closing': [
@@ -134,46 +143,12 @@ export default defineConfig([
           math: 'always'
         }
       ], // HTML标签自闭合
-      'vue/html-closing-bracket-spacing': [
-        'error',
-        {
-          startTag: 'never',
-          endTag: 'never',
-          selfClosingTag: 'always'
-        }
-      ], // HTML标签闭合括号的空格
-      'vue/first-attribute-linebreak': [
-        'error',
-        {
-          singleline: 'ignore',
-          multiline: 'below' // below | ignore | off
-        }
-      ], // 第一个属性的换行
-      'vue/html-closing-bracket-newline': [
-        'error',
-        {
-          singleline: 'never',
-          multiline: 'always' // never 强制闭合括号在同一行
-        }
-      ], // HTML标签闭合括号的换行
-      'vue/no-duplicate-attributes': [
-        'error',
-        {
-          allowCoexistClass: true,
-          allowCoexistStyle: true
-        }
-      ], // 禁止重复的属性名
       /**
        * component 组件相关规则
        */
-      'vue/script-setup-uses-vars': 'error', // <script setup> 变量检查
       'vue/no-unused-components': 'error', // 未使用组件检查
       'vue/component-definition-name-casing': ['error', 'PascalCase'], // 组件名大小写
-      'vue/component-options-name-casing': ['error', 'PascalCase'], // 组件选项名大小写
-      'vue/custom-event-name-casing': ['error', 'camelCase'], // 自定义事件名大小写
       'vue/multi-word-component-names': 'off', // 关闭组件名称必须是多单词的规则
-      'vue/no-reserved-component-names': 'off', // 关闭对保留组件名称的检查
-      'vue/attribute-hyphenation': 'off', // 对模板中的自定义组件强制执行属性命名样式
       // defineMacros 顺序
       'vue/define-macros-order': [
         'error',
@@ -185,20 +160,11 @@ export default defineConfig([
        * props 模板相关规则
        */
       'vue/no-setup-props-reactivity-loss': 'off', // 关闭对 `setup` 中 `props` 响应性丢失的规则
-      'vue/prop-name-casing': 'off', // 关闭 `prop` 名称大小写规则的检查
       'vue/require-default-prop': 'off', // 关闭要求组件 `prop` 必须有默认值的规则
-      'vue/require-prop-types': 'off', // 关闭要求组件 `prop` 必须有类型定义的规则
-      'vue/no-mutating-props': 'error', // props 不可变性检查
       /**
        * 其它规则
        */
       'vue/require-explicit-emits': 'off', // 关闭对 `emits` 必须显式声明的规则
-      'vue/no-async-in-computed-properties': 'error', // 不允许在计算属性中使用async
-      'vue/no-extra-parens': ['error', 'all'], // 不允许使用多余的括号
-      'vue/multiline-ternary': ['error', 'always-multiline'], // 要求多行三元运算符的换行
-      'vue/operator-linebreak': 'off', // 关闭操作符换行规则的检查
-      'vue/quote-props': 'off', // 关闭属性名引号使用规则的检查
-      'vue/no-irregular-whitespace': 'off', // 关闭检查不规则空白字符的规则
 
       // 关闭 与prettier冲突的 规则
       ...eslintConfigPrettier.rules
