@@ -9,8 +9,8 @@ import {
   dependencies,
   devDependencies
 } from '../../package.json';
-import formatBytes from '../../lib/formatBytes';
-import sum from '../../lib/sum';
+import formatBytes from './formatBytes';
+import sum from './sum';
 
 /** 启动`node`进程时所在工作目录的绝对路径 */
 const root: string = process.cwd();
@@ -40,7 +40,7 @@ const pathResolve = (dir = '.', metaUrl = import.meta.url) => {
 const alias: Record<string, string> = {
   '@': pathResolve('../../src'),
   '@assets': pathResolve('../../src/assets'),
-  '@build': pathResolve('../../build')
+  '@utils': pathResolve('../../src/utils')
 };
 
 /** 平台的名称、版本、运行所需的`node`和`pnpm`版本、依赖、最后构建时间的类型提示 */
