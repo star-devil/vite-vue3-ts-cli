@@ -67,7 +67,6 @@ pnpm create vvt [项目名称]
 ```plaintext
 ├── .husky/            # Git Hooks
 ├── .vscode/           # VS Code 配置
-├── lib/               # 工具库
 ├── nginx/             # Nginx 配置
 ├── public/            # 公共资源
 ├── src/
@@ -76,6 +75,7 @@ pnpm create vvt [项目名称]
 │   ├── router/         # 路由配置
 │   ├── stores/         # Pinia 状态管理
 │   ├── styles/         # 公共样式、tailwindcss配置(安装了tailwindcss时才会有)
+│   ├── utils/          # 工具库
 │   ├── App.vue         # 根组件
 │   ├── main.ts         # 入口文件
 │   └── vite-env.d.ts   # Vite 类型声明
