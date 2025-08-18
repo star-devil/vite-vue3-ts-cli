@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import './styles/style.scss';
 import './styles/tailwind.css';
-import '../lib/remUnit';
+import './utils/remUnit';
 import pinia from './stores';
 import router from './router/index';
 import './utils/globalPolyfills';

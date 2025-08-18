@@ -3,7 +3,7 @@
  * @param obj 对象
  * @returns 返回删除空值后的新对象
  */
-export const removeEmpty = (obj: Record<string, any>) =>
+export const removeEmpty = (obj) =>
   Object.fromEntries(
     Object.entries(obj).filter(
       ([_, value]) => value !== '' && value !== null && value !== undefined
@@ -15,7 +15,7 @@ export const removeEmpty = (obj: Record<string, any>) =>
  * @param url 传入 assets/ 之后的文件路径
  * @returns 返回相对地址文件路径
  */
-export const getAssetsFile = (url: string) => {
+export const getAssetsFile = (url) => {
   return new URL(`../assets/${url}`, import.meta.url).href;
 };
 
@@ -24,7 +24,7 @@ export const getAssetsFile = (url: string) => {
  * @param data 下载文件blob对象
  * @param name 下载的文件名
  */
-export const downloadFile = (data: Blob, name: string) => {
+export const downloadFile = (data, name) => {
   try {
     const downloadUrl = window.URL.createObjectURL(data);
     const link = document.createElement('a');
