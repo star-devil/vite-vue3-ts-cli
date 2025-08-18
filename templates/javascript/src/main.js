@@ -5,5 +5,6 @@ import './styles/tailwind.css';
 import '../lib/remUnit';
 import pinia from './stores';
 import router from './router/index';
+import './utils/globalPolyfills';
 
 createApp(App).use(pinia).use(router).mount('#app');
