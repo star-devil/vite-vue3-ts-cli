@@ -237,9 +237,14 @@ async function updateProjectFiles(root, selectedPlugins, projectInfo) {
         cssConfig = cssConfig.replace(/\/\/ @ts-expect-error.*\n/, '');
       }
 
-      cssConfig = cssConfig.replace(/import pxtorem.*;\n/, '');
-      cssConfig = cssConfig.replace(/\s*pxtorem\({[^}]+}\),?\n?/, '');
+      cssConfig = cssConfig.replace(/import pxtorem[^;]*;\n/, '');
+      cssConfig = cssConfig.replace(/\s*pxtorem\([^)]+\)\s*,?\s*\n?/, '');
       mainContent = mainContent.replace(/import '\.\/utils\/remUnit';\n/, '');
+    }
+    // 如果安装了 tailwindcss4，自带autoprefixer，需要删除相关配置
+    if (selectedPlugins.includes('tailwind')) {
+      cssConfig = cssConfig.replace(/import autoprefixer[^;]*;\n/, '');
+      cssConfig = cssConfig.replace(/\s*autoprefixer\([^)]+\)\s*,?\s*\n?/, '');
     }
 
     fs.writeFileSync(cssConfigPath, cssConfig);
@@ -370,12 +375,15 @@ async function updatePackageJson(root, selectedPlugins, projectInfo) {
         delete pkg.devDependencies[dep];
       });
     }
+    if (selectedPlugins.includes('tailwind')) {
+      delete pkg.devDependencies['autoprefixer'];
+    }
   });
 
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
 }
 
-function copyTemplate(src, dest) {
+async function copyTemplate(src, dest) {
   const stat = fs.statSync(src);
   if (stat.isDirectory()) {
     copyDir(src, dest);
