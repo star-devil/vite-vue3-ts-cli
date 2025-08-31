@@ -79,11 +79,17 @@ export const handleNetworkError = (errStatus: number) => {
    */
   // const userStore = useUserStoreHook();
 
-  // userStore.isTokenExpiredHandle ||
+  // if (userStore.isTokenExpiredHandle) {
+  //   message(errMessage, {
+  //     type: 'error'
+  //   });
+  // } else {
   //   message(errMessage, {
   //     type: 'error',
   //     grouping: true
   //   });
+  // }
+
   console.log(errMessage);
 
   /**
@@ -107,11 +113,16 @@ const handleAuthError = (errno: string | number) => {
 
   if (errMessage) {
     /** 解释同handleNetworkError */
-    // userStore.isTokenExpiredHandle ||
+    // if (userStore.isTokenExpiredHandle) {
+    //   message(errMessage, {
+    //     type: 'error'
+    //   });
+    // } else {
     //   message(errMessage, {
     //     type: 'error',
     //     grouping: true
     //   });
+    // }
     // userStore.setTokenHandle(true);
     // userStore.logOut();
     console.log(errMessage);
