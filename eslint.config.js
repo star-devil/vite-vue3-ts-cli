@@ -4,7 +4,7 @@ import pluginVue from 'eslint-plugin-vue';
 import * as parserVue from 'vue-eslint-parser';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
-import markdown from 'eslint-plugin-markdown';
+import markdown from '@eslint/markdown';
 import globals from 'globals';
 import autoImport from './.eslintrc-auto-import.json' with { type: 'json' };
 import { defineConfig, globalIgnores } from 'eslint/config';
@@ -178,10 +178,7 @@ export default defineConfig([
   {
     files: ['**/*.d.ts'],
     rules: {
-      'eslint-comments/no-unlimited-disable': 'off', // 关闭无限禁用规则
-      'import/no-duplicates': 'off', // 关闭导入重复规则
-      'no-restricted-syntax': 'off', // 关闭禁止使用特定语法规则
-      'unused-imports/no-unused-vars': 'off' // 关闭未使用变量规则
+      'no-restricted-syntax': 'off' // 关闭禁止使用特定语法规则
     }
   },
   {

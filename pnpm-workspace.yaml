@@ -1,4 +1,8 @@
+allowBuilds:
+  '@parcel/watcher': true
+  '@tailwindcss/oxide': set this to true or false
+  esbuild: true
 onlyBuiltDependencies:
+  - '@parcel/watcher'
   - '@tailwindcss/oxide'
   - esbuild
-  - sharp

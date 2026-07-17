@@ -2,10 +2,8 @@
   "git.autofetch": true,
   "npm.packageManager": "pnpm",
   // 编辑器配置
-  "editor.fontSize": 18,
-  "editor.fontWeight": "normal",
   "editor.tabSize": 2,
-  "editor.wordWrapColumn": 100,
+  "editor.rulers": [100],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
@@ -18,13 +16,13 @@
   "editor.quickSuggestions": {
     "strings": true
   },
-  "editor.inlineSuggest.enabled": true,
+  "files.eol": "\n",
 
   "[vue]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode" // 无论默认格式化器是什么，都使用 prettier
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[markdown]": {
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   //防止VSCode启动带有node_modules的项目的时候很卡的问题

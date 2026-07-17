@@ -4,13 +4,11 @@ WORKDIR /app
 RUN corepack enable
 RUN corepack prepare pnpm@latest --activate
 
-RUN npm config set registry https://registry.npmmirror.com
-
 COPY .npmrc package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
-RUN pnpm build:test
+RUN pnpm build:prod
 
 FROM nginx:stable-alpine as production-stage
 
