@@ -11,31 +11,28 @@ import ora from 'ora';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const program = new Command();
 
+// 根据语言获取文件扩展名
+const getExt = (language) => (language === 'typescript' ? '.ts' : '.js');
+
 // 定义可选插件
 const PLUGINS = [
   {
     name: 'postcss-pxtorem',
     value: 'pxtorem',
     description: '将 px 单位转换为 rem 单位',
-    devDependencies: {
-      'postcss-pxtorem': '^6.1.0'
-    }
+    devDependencies: { 'postcss-pxtorem': '^6.1.0' }
   },
   {
     name: 'tailwindcss（v4.x）',
     value: 'tailwind',
     description: '功能优先的 CSS 框架',
-    devDependencies: {
-      tailwindcss: '^4.1.11'
-    }
+    devDependencies: { 'tailwindcss': '^4.1.11' }
   },
   {
     name: 'vite-svg-loader',
     value: 'svgLoader',
     description: '以组件形式加载 SVG',
-    devDependencies: {
-      'vite-svg-loader': '^5.1.0'
-    }
+    devDependencies: { 'vite-svg-loader': '^5.1.0' }
   }
 ];
 
@@ -58,7 +55,7 @@ const LANGUAGES = {
 program
   .name('create-vite-vue3-ts')
   .description('基于 Vite + Vue3 + TypeScript/JavaScript 的项目模板')
-  .version('0.1.0')
+  .version('0.4.0')
   .argument('[project-name]', '项目名称')
   .action(async (projectName) => {
     try {
@@ -71,108 +68,93 @@ program
 program.parse(process.argv);
 
 async function createProject(projectName) {
+  // 1. 获取项目信息
+  const { name, description, author } = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: '请输入项目名称：',
+      default: projectName || 'vite-vue3-project',
+      validate: (input) => (input.trim() ? true : '项目名称不能为空')
+    },
+    {
+      type: 'input',
+      name: 'description',
+      message: '请输入项目描述：',
+      default: '基于 Vite + Vue3 的项目模板'
+    },
+    {
+      type: 'input',
+      name: 'author',
+      message: '请输入作者名称：',
+      default: 'egg'
+    }
+  ]);
+
+  // 2. 选择语言
+  const { language } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'language',
+      message: '请选择开发语言：',
+      choices: Object.values(LANGUAGES).map((lang) => ({
+        name: `${lang.name} (${lang.description})`,
+        value: lang.value
+      })),
+      default: 'typescript'
+    }
+  ]);
+
+  const targetDir = path.join(process.cwd(), name);
+
+  // 3. 检查目标目录
+  if (fs.existsSync(targetDir)) {
+    const { overwrite } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'overwrite',
+        message: `目标目录 ${chalk.cyan(name)} 已存在。是否要覆盖？`,
+        default: true
+      }
+    ]);
+    if (!overwrite) throw new Error('操作取消');
+
+    const spinner = ora('正在清理目录...').start();
+    await fs.promises.rm(targetDir, { recursive: true, force: true });
+    spinner.succeed(chalk.green('目录清理完成'));
+  }
+
+  // 4. 逐个选择插件
+  const selectedPlugins = [];
+  for (const plugin of PLUGINS) {
+    const { install } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'install',
+        message: `是否安装 ${plugin.name}（${plugin.description}）？`,
+        default: false
+      }
+    ]);
+    if (install) selectedPlugins.push(plugin.value);
+  }
+
+  // 5. 创建项目
+  const spinner = ora(chalk.yellow('正在创建项目...')).start();
+
   try {
-    // 获取项目名称
-    const { name, description, author } = await inquirer.prompt([
-      {
-        type: 'input',
-        name: 'name',
-        message: '请输入项目名称：',
-        default: projectName || 'vite-vue3-project',
-        validate: (input) => {
-          if (!input.trim()) {
-            return '项目名称不能为空';
-          }
-          return true;
-        }
-      },
-      {
-        type: 'input',
-        name: 'description',
-        message: '请输入项目描述：',
-        default: '基于 Vite + Vue3 的项目模板'
-      },
-      {
-        type: 'input',
-        name: 'author',
-        message: '请输入作者名称：',
-        default: 'egg'
-      }
-    ]);
-
-    // 选择语言
-    const { language } = await inquirer.prompt([
-      {
-        type: 'list',
-        name: 'language',
-        message: '请选择开发语言：',
-        choices: Object.values(LANGUAGES).map((lang) => ({
-          name: `${lang.name} (${lang.description})`,
-          value: lang.value
-        })),
-        default: 'typescript'
-      }
-    ]);
-
-    const targetDir = path.join(process.cwd(), name);
-
-    // 检查目录是否存在
-    if (fs.existsSync(targetDir)) {
-      const { overwrite } = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'overwrite',
-          message: `目标目录 ${chalk.cyan(name)} 已存在。是否要覆盖？`,
-          default: true
-        }
-      ]);
-
-      if (!overwrite) {
-        throw new Error('操作取消');
-      }
-
-      const spinner = ora('正在清理目录...').start();
-
-      await fs.promises.rm(targetDir, { recursive: true, force: true });
-      spinner.succeed(chalk.green('目录清理完成'));
-    }
-
-    // 逐个选择插件
-    const selectedPlugins = [];
-    for (const plugin of PLUGINS) {
-      const { install } = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'install',
-          message: `是否安装 ${plugin.name}（${plugin.description}）？`,
-          default: false
-        }
-      ]);
-      if (install) {
-        selectedPlugins.push(plugin.value);
-      }
-    }
-
-    // 创建项目
-    const spinner = ora(chalk.bgYellow('正在创建项目...')).start();
-
-    // 复制模板
     const templateDir = path.resolve(
       __dirname,
       '..',
       LANGUAGES[language].templateDir
     );
-    fs.mkdirSync(targetDir, { recursive: true });
+
+    // 复制模板
+    await fs.promises.mkdir(targetDir, { recursive: true });
     await copyTemplate(templateDir, targetDir);
 
     // 更新配置文件
     spinner.text = '正在更新配置文件...';
-    await updateProjectFiles(targetDir, selectedPlugins, {
-      name,
-      description,
-      author,
-      language
-    });
+    await updateProjectFiles(targetDir, selectedPlugins, language);
     await updatePackageJson(targetDir, selectedPlugins, {
       name,
       description,
@@ -181,222 +163,190 @@ async function createProject(projectName) {
 
     spinner.succeed(chalk.green('项目创建成功！'));
 
-    // 输出使用说明
     console.log('\n使用说明：');
     console.log(chalk.cyan(`  cd ${name}`));
     console.log(chalk.cyan('  pnpm install'));
     console.log(chalk.cyan('  pnpm dev\n'));
   } catch (error) {
-    const spinner = ora();
     spinner.fail(chalk.red('项目创建失败：' + error.message));
     throw error;
   }
 }
 
-async function updateProjectFiles(root, selectedPlugins, projectInfo) {
-  // 根据选择的语言决定入口文件的扩展名
-  const mainExtension = projectInfo.language === 'typescript' ? '.ts' : '.js';
-  const mainPath = path.join(root, `src/main${mainExtension}`);
+// ---- 模板文件处理 ----
 
-  if (!fs.existsSync(mainPath)) {
-    throw new Error(`找不到主入口文件: ${mainPath}`);
-  }
-
-  let mainContent = fs.readFileSync(mainPath, 'utf-8');
-
-  // 处理 CSS 配置文件
-  const cssConfigExtension =
-    projectInfo.language === 'typescript' ? '.ts' : '.js';
-  const cssConfigPath = path.join(
+async function updateProjectFiles(root, selectedPlugins, language) {
+  const ext = getExt(language);
+  const mainPath = path.join(root, `src/main${ext}`);
+  const cssConfigPath = path.join(root, `viteConfig/css/index${ext}`);
+  const pluginsIndexPath = path.join(root, `viteConfig/plugins/index${ext}`);
+  const tailwindPluginPath = path.join(
     root,
-    `viteConfig/css/index${cssConfigExtension}`
+    `viteConfig/plugins/tailwindcss${ext}`
   );
+  const staticPerfPath = path.join(root, `viteConfig/plugins/staticPerf${ext}`);
 
-  // 根据选择的插件修改配置
-  if (fs.existsSync(cssConfigPath)) {
-    let cssConfig = fs.readFileSync(cssConfigPath, 'utf-8');
-    // 处理 pxtorem 插件
-    if (!selectedPlugins.includes('pxtorem')) {
-      const remUnitExtension =
-        projectInfo.language === 'typescript' ? '.ts' : '.js';
-      const remUnitPath = path.join(
-        root,
-        `src/utils/remUnit${remUnitExtension}`
-      );
-      if (fs.existsSync(remUnitPath)) {
-        fs.unlinkSync(remUnitPath);
-        // 如果 lib 目录为空，也删除该目录
-        const libDir = path.dirname(remUnitPath);
-        if (fs.readdirSync(libDir).length === 0) {
-          fs.rmSync(libDir, { recursive: true });
-        }
-      }
+  // 读取需要修改的文件
+  let mainContent = await readFile(mainPath);
+  let cssConfig = await readFile(cssConfigPath);
+  const pluginsIndex = await readFile(pluginsIndexPath);
+  let pluginsIndexContent = pluginsIndex;
+  let staticPerfConfig = await readFile(staticPerfPath);
 
-      // TypeScript特有的注释，在JavaScript中可能不存在
-      if (projectInfo.language === 'typescript') {
-        cssConfig = cssConfig.replace(/\/\/ @ts-expect-error.*\n/, '');
-      }
+  // ---- 处理 postcss-pxtorem 插件 ----
+  if (!selectedPlugins.includes('pxtorem')) {
+    // 删除 remUnit 文件
+    const remUnitPath = path.join(root, `src/utils/remUnit${ext}`);
+    await removeFile(remUnitPath);
+    await removeEmptyDir(path.dirname(remUnitPath));
 
-      cssConfig = cssConfig.replace(/import pxtorem[^;]*;\n/, '');
-      cssConfig = cssConfig.replace(/\s*pxtorem\([^)]+\)\s*,?\s*\n?/, '');
-      mainContent = mainContent.replace(/import '\.\/utils\/remUnit';\n/, '');
+    // TS 模板中移除 @ts-expect-error 注释
+    if (language === 'typescript') {
+      cssConfig = cssConfig.replace(/\/\/ @ts-expect-error postcss-pxtorem.*\n/g, '');
     }
-    // 如果安装了 tailwindcss4，自带autoprefixer，需要删除相关配置
-    if (selectedPlugins.includes('tailwind')) {
-      cssConfig = cssConfig.replace(/import autoprefixer[^;]*;\n/, '');
-      cssConfig = cssConfig.replace(/\s*autoprefixer\([^)]+\)\s*,?\s*\n?/, '');
-    }
-
-    fs.writeFileSync(cssConfigPath, cssConfig);
-    fs.writeFileSync(mainPath, mainContent);
+    // 移除 pxtorem import 和配置
+    cssConfig = cssConfig.replace(/import pxtorem[^;]*;\n/, '');
+    cssConfig = cssConfig.replace(/\s*pxtorem\([^)]+\)\s*,?\s*\n?/, '');
+    // 移除 main 中的 remUnit import
+    mainContent = mainContent.replace(
+      /import '\.\/utils\/remUnit';\n/,
+      ''
+    );
   }
 
-  // 处理 tailwindcss 插件
+  // ---- 处理 tailwindcss 插件 ----
   if (!selectedPlugins.includes('tailwind')) {
-    // 删除 tailwind.css 文件
-    const tailwindPath = path.join(root, 'src/styles/tailwind.css');
-    if (fs.existsSync(tailwindPath)) {
-      fs.unlinkSync(tailwindPath);
-    }
+    // 删除相关文件
+    const tailwindCssPath = path.join(root, 'src/styles/tailwind.css');
+    await removeFile(tailwindCssPath);
+    await removeFile(tailwindPluginPath);
 
-    // 删除 tailwindcss.ts/js 配置文件
-    const tailwindConfigExtension =
-      projectInfo.language === 'typescript' ? '.ts' : '.js';
-    const tailwindPluginPath = path.join(
-      root,
-      `viteConfig/plugins/tailwindcss${tailwindConfigExtension}`
-    );
-    if (fs.existsSync(tailwindPluginPath)) {
-      fs.unlinkSync(tailwindPluginPath);
-    }
-
-    // 从 main.ts/js 中移除 tailwind.css 导入
+    // 移除 tailwind.css import
     mainContent = mainContent.replace(
       /import '\.\/styles\/tailwind\.css';\n/,
       ''
     );
-
-    // 从 plugins/index.ts/js 中移除 tailwindcss 相关导入和调用
-    const pluginsIndexPath = path.join(
-      root,
-      `viteConfig/plugins/index${tailwindConfigExtension}`
-    );
-    if (fs.existsSync(pluginsIndexPath)) {
-      let pluginsIndex = fs.readFileSync(pluginsIndexPath, 'utf-8');
-      // 删除导入语句
-      pluginsIndex = pluginsIndex.replace(
-        /import setupTailwindcss from '\.\/tailwindcss';\n/,
-        ''
-      );
-      // 删除函数调用
-      pluginsIndex = pluginsIndex.replace(/,?\s*setupTailwindcss\(\)/, '');
-      fs.writeFileSync(pluginsIndexPath, pluginsIndex);
-    }
-
-    fs.writeFileSync(mainPath, mainContent);
+    // 移除 plugins/index 中的 tailwindcss 导入和调用
+    pluginsIndexContent = pluginsIndexContent
+      .replace(/import setupTailwindcss from '\.\/tailwindcss';\n/, '')
+      .replace(/,?\s*setupTailwindcss\(\)/, '');
   }
 
-  const staticPerfConfigExtension =
-    projectInfo.language === 'typescript' ? '.ts' : '.js';
-  const staticPerfConfigPath = path.join(
-    root,
-    `viteConfig/plugins/staticPerf${staticPerfConfigExtension}`
-  );
-
-  if (fs.existsSync(staticPerfConfigPath)) {
-    let staticPerfConfig = fs.readFileSync(staticPerfConfigPath, 'utf-8');
-    // 处理 svgLoader 插件
-    if (!selectedPlugins.includes('svgLoader')) {
-      const appVuePath = path.join(root, 'src/App.vue');
-      if (fs.existsSync(appVuePath)) {
-        let appContent = fs.readFileSync(appVuePath, 'utf-8');
-        // 删除 SVG 组件的 import 语句
-        appContent = appContent.replace(
+  // ---- 处理 vite-svg-loader 插件 ----
+  if (!selectedPlugins.includes('svgLoader')) {
+    // 替换 App.vue 中 SVG 组件引用为 img 标签
+    const appVuePath = path.join(root, 'src/App.vue');
+    if (fs.existsSync(appVuePath)) {
+      let appContent = await readFile(appVuePath);
+      appContent = appContent
+        .replace(
           /import VueView from '@assets\/icons\/vue\.svg';\n/,
           ''
-        );
-        appContent = appContent.replace(
+        )
+        .replace(
           /import ViteView from '@assets\/icons\/vite\.svg';\n/,
           ''
-        );
-
-        // 替换 SVG 组件为 img 标签
-        appContent = appContent.replace(
+        )
+        .replace(
           /<ViteView width="40" height="40" class="logo" \/>/,
           '<img src="./assets/icons/vite.svg" width="40" height="40" class="logo" alt="Vite logo" />'
-        );
-        appContent = appContent.replace(
+        )
+        .replace(
           /<VueView width="40" height="40" class="logo" \/>/,
           '<img src="./assets/icons/vue.svg" width="40" height="40" class="logo vue" alt="Vue logo" />'
         );
-        fs.writeFileSync(appVuePath, appContent);
-      }
-      staticPerfConfig = staticPerfConfig.replace(
-        /import.*vite-svg-loader.*;\n/,
-        ''
-      );
-      staticPerfConfig = staticPerfConfig.replace(
-        /\s*svgLoader\([^)]*\),?\n?/,
-        ''
-      );
+      await writeFile(appVuePath, appContent);
     }
-    fs.writeFileSync(staticPerfConfigPath, staticPerfConfig);
+
+    // 移除 staticPerf 中的 svgLoader import 和调用
+    staticPerfConfig = staticPerfConfig
+      .replace(/import.*vite-svg-loader.*;\n/, '')
+      .replace(/\s*svgLoader\([^)]*\),?\n?/, '');
   }
+
+  // ---- 统一写入修改后的文件 ----
+  await writeFile(mainPath, mainContent);
+  await writeFile(cssConfigPath, cssConfig);
+  await writeFile(pluginsIndexPath, pluginsIndexContent);
+  await writeFile(staticPerfPath, staticPerfConfig);
 }
+
+// ---- package.json 更新 ----
 
 async function updatePackageJson(root, selectedPlugins, projectInfo) {
   const pkgPath = path.join(root, 'package.json');
-  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+  const pkg = JSON.parse(await readFile(pkgPath));
 
-  // 更新项目信息
-  pkg.name = projectInfo.name;
-  pkg.description = projectInfo.description;
-  pkg.author = projectInfo.author;
+  // 写入用户提供的项目信息
+  Object.assign(pkg, {
+    name: projectInfo.name,
+    description: projectInfo.description,
+    author: projectInfo.author
+  });
 
-  // 获取选中插件的依赖
-  const devDependencies = {};
+  // 合并选中插件的依赖
   for (const plugin of PLUGINS.filter((p) =>
     selectedPlugins.includes(p.value)
   )) {
-    Object.assign(devDependencies, plugin.devDependencies);
+    Object.assign(pkg.devDependencies, plugin.devDependencies);
   }
 
-  // 更新 package.json
-  pkg.devDependencies = {
-    ...pkg.devDependencies,
-    ...devDependencies
-  };
-
   // 移除未选中插件的依赖
-  PLUGINS.forEach((plugin) => {
+  for (const plugin of PLUGINS) {
     if (!selectedPlugins.includes(plugin.value)) {
-      Object.keys(plugin.devDependencies).forEach((dep) => {
+      for (const dep of Object.keys(plugin.devDependencies)) {
         delete pkg.dependencies[dep];
         delete pkg.devDependencies[dep];
-      });
+      }
     }
-    if (selectedPlugins.includes('tailwind')) {
-      delete pkg.devDependencies['autoprefixer'];
-    }
-  });
+  }
 
-  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+  await writeFile(pkgPath, JSON.stringify(pkg, null, 2));
+}
+
+// ---- 文件操作工具 ----
+
+async function readFile(filePath) {
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`找不到文件: ${filePath}`);
+  }
+  return fs.promises.readFile(filePath, 'utf-8');
+}
+
+async function writeFile(filePath, content) {
+  await fs.promises.writeFile(filePath, content, 'utf-8');
+}
+
+async function removeFile(filePath) {
+  try {
+    await fs.promises.unlink(filePath);
+  } catch {
+    // 文件不存在则忽略
+  }
+}
+
+async function removeEmptyDir(dirPath) {
+  try {
+    const files = await fs.promises.readdir(dirPath);
+    if (files.length === 0) {
+      await fs.promises.rmdir(dirPath);
+    }
+  } catch {
+    // 目录不存在则忽略
+  }
 }
 
 async function copyTemplate(src, dest) {
-  const stat = fs.statSync(src);
+  const stat = await fs.promises.stat(src);
   if (stat.isDirectory()) {
-    copyDir(src, dest);
+    await fs.promises.mkdir(dest, { recursive: true });
+    const entries = await fs.promises.readdir(src);
+    await Promise.all(
+      entries.map((file) =>
+        copyTemplate(path.resolve(src, file), path.resolve(dest, file))
+      )
+    );
   } else {
-    fs.copyFileSync(src, dest);
-  }
-}
-
-function copyDir(srcDir, destDir) {
-  fs.mkdirSync(destDir, { recursive: true });
-  for (const file of fs.readdirSync(srcDir)) {
-    const srcFile = path.resolve(srcDir, file);
-    const destFile = path.resolve(destDir, file);
-    copyTemplate(srcFile, destFile);
+    await fs.promises.copyFile(src, dest);
   }
 }
