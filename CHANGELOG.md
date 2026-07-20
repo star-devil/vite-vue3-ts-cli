@@ -1,5 +1,11 @@
 # create-vvt
 
+## 0.4.1
+
+### Patch Changes
+
+- 6e2015b: 调整构建 bin 命令
+
 ## 0.4.0
 
 ### Minor Changes
