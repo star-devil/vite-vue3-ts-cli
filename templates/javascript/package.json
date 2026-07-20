@@ -1,6 +1,6 @@
 {
   "name": "vite-vue3-js-cli",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "type": "module",
   "description": "一个基于 Vite + Vue3 + JavaScript 的项目模板",
   "scripts": {

@@ -27,8 +27,8 @@ try {
 
   console.log('Modified package.json for GitHub Packages');
 
-  // 执行发布
-  execSync('npm publish', { stdio: 'inherit' });
+  // 执行发布（使用 pnpm，不需要 --no-git-checks）
+  execSync('pnpm publish', { stdio: 'inherit' });
   console.log('Published to GitHub Packages successfully!');
 } catch (error) {
   console.error('Error:', error);
