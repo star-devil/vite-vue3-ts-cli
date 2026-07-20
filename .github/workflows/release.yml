@@ -29,11 +29,6 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      # 配置 npm 注册表认证
-      - name: Setup npm auth
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
       - run: pnpm install --frozen-lockfile
 
       # changesets：自动创建版本 PR 或执行发布
