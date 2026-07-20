@@ -29,6 +29,12 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
+      # 显式写入项目级 .npmrc，pnpm 从这里读取 registry + token
+      - name: Setup npm auth
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
+          echo "registry=https://registry.npmjs.org" >> .npmrc
+
       - run: pnpm install --frozen-lockfile
 
       # changesets：自动创建版本 PR 或执行发布
