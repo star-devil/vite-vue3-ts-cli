@@ -7,9 +7,9 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
   const {
     VITE_PORT,
     VITE_COMPRESSION,
-    VITE_PUBLIC_PATH,
-    VITE_PROXY,
-    VITE_SERVER_URL
+    VITE_PUBLIC_PATH
+    // VITE_PROXY,
+    // VITE_SERVER_URL
   } = wrapperEnv(env);
 
   const {
@@ -32,7 +32,8 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
     // css 配置
     css: loadViteCss(),
     // 开发服务器配置
-    server: loadViteServer(VITE_PORT, VITE_PROXY, VITE_SERVER_URL),
+    // server: loadViteServer(VITE_PORT, VITE_PROXY, VITE_SERVER_URL),
+    server: loadViteServer(VITE_PORT),
     // 移除所有console+debugger,使用默认的esbuild,比 terser 快 20-40倍,压缩率只差 1%-2%。
     esbuild: {
       drop: mode !== 'development' ? ['console', 'debugger'] : []

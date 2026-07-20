@@ -1,11 +1,10 @@
 import type { ServerOptions } from 'vite';
 
 export default function (
-  VITE_PORT: number,
-  VITE_PROXY: string,
-  VITE_SERVER_URL: string
+  VITE_PORT: number
+  // VITE_PROXY: string,
+  // VITE_SERVER_URL: string
 ) {
-  console.log(VITE_PORT, VITE_PROXY, VITE_SERVER_URL);
   const server: ServerOptions = {
     // 服务器主机名，如果允许外部访问，可设置为"0.0.0.0"
     host: '0.0.0.0',
