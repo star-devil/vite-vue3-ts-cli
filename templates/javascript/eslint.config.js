@@ -2,7 +2,7 @@ import pluginJs from '@eslint/js';
 import pluginVue from 'eslint-plugin-vue';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
-import markdown from 'eslint-plugin-markdown';
+import markdown from '@eslint/markdown';
 import globals from 'globals';
 import autoImport from './.eslintrc-auto-import.json' with { type: 'json' };
 import { defineConfig, globalIgnores } from 'eslint/config';

@@ -9,6 +9,11 @@ body {
   margin: 0;
 }
 
+html {
+  /* 逻辑：在 375px 宽时，1rem = 12px；在 1440px 宽时，1rem = 14px */
+  font-size: clamp(12px, 11.3px + 0.19vw, 14px) !important;
+}
+
 /* 灰色模式 */
 .html-grey {
   filter: grayscale(100%);

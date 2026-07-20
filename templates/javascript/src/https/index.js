@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { stringify } from 'qs';
-import NProgress from '../progress';
+import NProgress from '../utils/progress';
 import {
   handleChangeRequestHeader,
   TIMEOUT_EXEMPT_URLS,

@@ -4,7 +4,10 @@ import './styles/style.scss';
 import './styles/tailwind.css';
 import './utils/remUnit';
 import pinia from './stores';
-import router from './router/index';
+import setupRouter from './router/index';
 import './utils/globalPolyfills';
+import { setupErrorHandler } from './utils/errorHandler';
 
-createApp(App).use(pinia).use(router).mount('#app');
+const app = createApp(App);
+setupErrorHandler(app);
+app.use(pinia).use(setupRouter()).mount('#app');

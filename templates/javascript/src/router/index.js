@@ -1,9 +1,19 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory
+} from 'vue-router';
 import homeRoutes from './modules/home';
+import { setupRouterGuards } from './guards';
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes: [...homeRoutes]
-});
-
-export default router;
+export default function setupRouter() {
+  const router = createRouter({
+    history:
+      import.meta.env.VITE_ROUTER_HISTORY === 'hash'
+        ? createWebHashHistory()
+        : createWebHistory(),
+    routes: [...homeRoutes]
+  });
+  setupRouterGuards(router);
+  return router;
+}
